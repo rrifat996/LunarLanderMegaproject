@@ -8,6 +8,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.vulkan.AMDTextureGatherBiasLod;
 
 import com.base.engine.Camera;
 import com.base.engine.Entity;
@@ -49,25 +50,26 @@ public class TestGame implements ILogic{
 	public void init() throws Exception {
 		renderer.init();
 		
-		Model model = loader.loadOBJModel("./src/models/bunny.txt");
-		model.setTexture(new Texture(loader.loadTexture("./textures/blue.jpg")));
+		Model model = loader.loadOBJModel("./src/models/star.obj");
+		model.setTexture(new Texture(loader.loadTexture("./textures/yellow.jpg")));
 		
 		terrains = new ArrayList<>();
-		Terrain terrain = new Terrain(new Vector3f(0,-1,-800), loader);
+		Terrain terrain = new Terrain(new Vector3f(0,-3,-5), loader);
 		terrains.add(terrain);
 		
 		entities = new ArrayList<>();
 		Random rnd = new Random();
 		for(int i = 0; i < 200; i++) {
 			float x = rnd.nextFloat() * 100 - 50;
-			float y = rnd.nextFloat() * 100 - 50;
-			float z = rnd.nextFloat() * -300;
+			float y = Math.abs(rnd.nextFloat() * 100 - 50) - 3;
+			float z = rnd.nextFloat() * 100 - 50;
 			entities.add(new Entity(model, new Vector3f(x,y,z),
-					new Vector3f(rnd.nextFloat() * 180, rnd.nextFloat() * 180, 0), 1));
+					new Vector3f(rnd.nextFloat() * 180, 
+								 rnd.nextFloat() * 180, 
+								 0), 
+					0.05f));
 		}
-		
-		
-      	}
+	}
 
 	@Override
 	public void input() {
@@ -82,9 +84,9 @@ public class TestGame implements ILogic{
 		if(window.isKeyPressed(GLFW.GLFW_KEY_D))
 			cameraInc.x = 1;
 		
-		if(window.isKeyPressed(GLFW.GLFW_KEY_Z))
+		if(window.isKeyPressed(GLFW.GLFW_KEY_LEFT_CONTROL))
 			cameraInc.y = -1;
-		if(window.isKeyPressed(GLFW.GLFW_KEY_X))
+		if(window.isKeyPressed(GLFW.GLFW_KEY_SPACE))
 			cameraInc.y = 1;
 	}
 

@@ -7,7 +7,7 @@ import com.base.engine.entity.Model;
 import com.base.engine.entity.Texture;
 
 public class Terrain {
-	private static final float SIZE = 800;
+	private static final float SIZE = 20;
 	private static final int VERTEX_COUNT = 128;
 	
 	private Vector3f position;
@@ -16,7 +16,7 @@ public class Terrain {
 	public Terrain(Vector3f position, ObjectLoader loader) throws Exception {
 		this.position = position;
 		this.model = generateTerrain(loader);
-		model.setTexture(new Texture(loader.loadTexture("./textures/blue.jpg")));
+		model.setTexture(new Texture(loader.loadTexture("./textures/gray.jpg")));
 	}
 	private Model generateTerrain(ObjectLoader loader) {
 		int count = VERTEX_COUNT * VERTEX_COUNT;
