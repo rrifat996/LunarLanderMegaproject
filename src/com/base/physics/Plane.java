@@ -14,7 +14,7 @@ public class Plane {
 		float distanceFromSphereCenter = Math.abs(mNormal.dot(other.getmCenter()) + mDistance);
 		float distanceFromSphere = distanceFromSphereCenter - other.getRadius();
 		
-		return new IntersectData(distanceFromSphere < 0, distanceFromSphere	);
+		return new IntersectData(distanceFromSphere < 0, mNormal.mul(distanceFromSphere));
 	}
 	public Plane Normalized() {
 		float magnitude = mNormal.length();

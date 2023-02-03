@@ -15,7 +15,7 @@ public class AABB {
 		Vector3f distance = Utils.vecMax(distance1, distance2);
 		float maxDistance = Utils.max(distance);
 		
-		return new IntersectData(maxDistance < 0, maxDistance);
+		return new IntersectData(maxDistance < 0, distance);
 	}
 	
 	public AABB(Vector3f mMinExtents, Vector3f mMaxExtents) {

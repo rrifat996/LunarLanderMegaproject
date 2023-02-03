@@ -2,23 +2,36 @@ package com.base.physics;
 
 import org.joml.Vector3f;
 
-public class BoundingSphere {
+public class BoundingSphere extends Collider{
 	private final Vector3f mCenter;
 	private final float mRadius;
+	
+	
+	@Override
+	public Vector3f getCenter() {
+		return mCenter;
+	}
+	@Override
+	public void transform(Vector3f translation) {
+		mCenter.add(translation);
+	}
 
 	public BoundingSphere(Vector3f mCenter, float mRadius) {
+		super(Collider.Type.TYPE_SPHERE.ordinal());
 		this.mCenter = mCenter;
 		this.mRadius = mRadius;
 	}
 	public IntersectData intersectBoundingSphere(BoundingSphere other) {
 		float radiusDistance = mRadius + other.getRadius();
-		float centerDistance = other.getmCenter().sub(mCenter).length();
+		Vector3f direction = other.getmCenter().sub(mCenter);
+		float centerDistance = direction.length();
+		direction.normalize();  
 		
-		if(centerDistance < radiusDistance) 
-			return new IntersectData(true, centerDistance - radiusDistance);
-		else {
-			return new IntersectData(false, centerDistance - radiusDistance);
-		}
+		float distance = centerDistance - radiusDistance;
+		
+		return new IntersectData(distance < 0, direction.mul(distance));
+		
+		
 	}
 	
 	
