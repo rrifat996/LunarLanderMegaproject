@@ -20,7 +20,7 @@ public class EngineManager {
 	private WindowManager window;
 	private MouseInput mouseInput; 
 	private GLFWErrorCallback errorCallback;
-	private float interval  = 0 ;// will be deleted
+	private float interval  = 0.01f ; //delta
 	
 	private void init() throws Exception {
 		GLFW.glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
@@ -30,6 +30,7 @@ public class EngineManager {
 		window.init();
 		gameLogic.init();
 		mouseInput.init();
+		
 	}
 	public void start() throws Exception {
 		init();

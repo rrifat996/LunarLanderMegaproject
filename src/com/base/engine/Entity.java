@@ -1,10 +1,13 @@
 package com.base.engine;
 
+import java.util.ArrayList;
+
 import org.joml.Vector3f;
 
 import com.base.engine.entity.Model;
+import com.base.physics.PhysicsObject;
 
-public class Entity {
+public abstract class Entity {
 	private Model model;
 	private Vector3f pos, rotation;
 	private float scale;
@@ -15,6 +18,8 @@ public class Entity {
 		this.rotation = rotation;
 		this.scale = scale;
 	}
+	abstract public ArrayList<PhysicsObject> getHitpoints();
+	
 	public void incPos(float x, float y, float z) {
 		this.pos.x += x;
 		this.pos.y += y;

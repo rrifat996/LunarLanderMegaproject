@@ -17,7 +17,8 @@ public class PhysicsObject {
 	}
 	
 	public Collider getCollider() {
-		Vector3f translation = mPosition.sub(mOldPosition);
+		Vector3f translation = new Vector3f(mPosition);
+		translation.sub(mOldPosition);
 		mOldPosition = mPosition;
 		
 		mCollider.transform(translation);

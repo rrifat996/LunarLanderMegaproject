@@ -30,8 +30,6 @@ public class BoundingSphere extends Collider{
 		float distance = centerDistance - radiusDistance;
 		
 		return new IntersectData(distance < 0, direction.mul(distance));
-		
-		
 	}
 	
 	
@@ -41,6 +39,7 @@ public class BoundingSphere extends Collider{
 	public float getRadius() {
 		return mRadius;
 	}
+	
 	
 	
 	

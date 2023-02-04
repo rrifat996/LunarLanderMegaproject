@@ -21,14 +21,21 @@ import com.base.engine.entity.Texture;
 import com.base.engine.entity.terrain.Terrain;
 import com.base.engine.rendering.RenderManager;
 import com.base.engine.utils.Consts;
+import com.base.physics.PhysicsEngine;
+import com.base.physics.PhysicsObject;
+
+import physicsObjects.LunarLander;
+import physicsObjects.Platform;
+import physicsObjects.Star;
 
 public class TestGame implements ILogic{
 	
-	private static final float CAMERA_MOVEMENT_SPEED = 0.05f;
+	private static final float CAMERA_MOVEMENT_SPEED = 0.2f;
 	
 	private final RenderManager renderer;
 	private final ObjectLoader loader;
 	private final WindowManager window;
+	private final PhysicsEngine physEngine;
 	
 	private List<Entity> entities;
 	private List<Terrain> terrains;
@@ -43,6 +50,7 @@ public class TestGame implements ILogic{
 		loader = new ObjectLoader();
 		camera = new Camera();
 		cameraInc = new Vector3f(0,0,0);
+		physEngine = new PhysicsEngine();
 	}
 	
 
@@ -50,25 +58,43 @@ public class TestGame implements ILogic{
 	public void init() throws Exception {
 		renderer.init();
 		
-		Model model = loader.loadOBJModel("./src/models/star.obj");
-		model.setTexture(new Texture(loader.loadTexture("./textures/yellow.jpg")));
+		Model starModel = loader.loadOBJModel("./src/models/star.obj");
+		starModel.setTexture(new Texture(loader.loadTexture("./textures/yellow.jpg")));
 		
-		terrains = new ArrayList<>();
-		Terrain terrain = new Terrain(new Vector3f(0,-3,-5), loader);
-		terrains.add(terrain);
+		Model landerModel = loader.loadOBJModel("./src/models/lunar_lander.obj");
+		landerModel.setTexture(new Texture(loader.loadTexture("./textures/grid.jpg")));
 		
+		Model cubeModel = loader.loadOBJModel("./src/models/cube.txt");
+		cubeModel.setTexture(new Texture(loader.loadTexture("./textures/gray.jpg")));
+		
+		//STARS
 		entities = new ArrayList<>();
 		Random rnd = new Random();
 		for(int i = 0; i < 200; i++) {
 			float x = rnd.nextFloat() * 100 - 50;
-			float y = Math.abs(rnd.nextFloat() * 100 - 50) - 3;
+			float y = Math.abs(rnd.nextFloat() * 100 - 50) ;
 			float z = rnd.nextFloat() * 100 - 50;
-			entities.add(new Entity(model, new Vector3f(x,y,z),
+			Entity star = new Star(starModel, new Vector3f(x,y,z),
 					new Vector3f(rnd.nextFloat() * 180, 
-								 rnd.nextFloat() * 180, 
-								 0), 
-					0.05f));
+							 rnd.nextFloat() * 180, 0), 0.05f);
+			entities.add(star);
 		}
+		
+		Entity platform = new Platform(cubeModel, new Vector3f(0,-63,-5), new Vector3f(0,0,0), -63f,50);
+		entities.add(platform);
+		
+		Entity lunarLander = new LunarLander(landerModel, new Vector3f(0,0,0),new Vector3f(270,0,0), 1);
+		entities.add(lunarLander);
+		
+		for (PhysicsObject obj : lunarLander.getHitpoints()) {
+			System.out.println(obj.getmVelocity().length());
+			physEngine.addObject(obj);
+		}
+		physEngine.addObject(platform.getHitpoints().get(0));
+		System.out.println(platform.getHitpoints().get(0).getmVelocity().length());
+		
+		
+		
 	}
 
 	@Override
@@ -92,6 +118,9 @@ public class TestGame implements ILogic{
 
 	@Override
 	public void update(float interval, MouseInput mouseInput) {
+		physEngine.simulate(interval);
+		physEngine.handleCollisions();
+		
 		camera.movePosition(
 				cameraInc.x * CAMERA_MOVEMENT_SPEED, 
 				cameraInc.y * CAMERA_MOVEMENT_SPEED,
@@ -107,9 +136,6 @@ public class TestGame implements ILogic{
 		
 		for(Entity entity: entities) {
 			renderer.processEntities(entity);
-		}
-		for(Terrain terrain: terrains) {
-			renderer.processTerrain(terrain);
 		}
 	}
 

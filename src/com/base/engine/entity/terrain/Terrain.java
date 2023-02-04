@@ -16,7 +16,7 @@ public class Terrain {
 	public Terrain(Vector3f position, ObjectLoader loader) throws Exception {
 		this.position = position;
 		this.model = generateTerrain(loader);
-		model.setTexture(new Texture(loader.loadTexture("./textures/gray.jpg")));
+		model.setTexture(new Texture(loader.loadTexture("./textures/grid.jpg")));
 	}
 	private Model generateTerrain(ObjectLoader loader) {
 		int count = VERTEX_COUNT * VERTEX_COUNT;

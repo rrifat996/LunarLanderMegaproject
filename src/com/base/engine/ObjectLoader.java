@@ -46,7 +46,7 @@ public class ObjectLoader {
 							);
 					vertices.add(verticesVec);
 					break;
-				case "vt": // vertex textures
+				case "vt": 	// vertex textures
 					Vector2f texturesVec = new Vector2f(
 					Float.parseFloat(tokens[1]),
 					Float.parseFloat(tokens[2])
