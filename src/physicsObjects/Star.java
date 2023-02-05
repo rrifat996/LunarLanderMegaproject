@@ -25,5 +25,17 @@ public class Star extends Entity{
 		return list;
 	}
 
+	@Override
+	public void transform(Vector3f v, Vector3f w) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setPtrs(Entity spherEntity1, Entity spherEntity2, Entity spherEntity3, Entity spherEntity4) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }

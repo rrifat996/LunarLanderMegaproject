@@ -8,7 +8,6 @@ import org.joml.Vector3f;
 import physicsObjects.LunarLander;
 
 public class PhysicsEngine {
-	private LunarLander lunarLander;
 	private List<PhysicsObject> mObjects;
 	private final float G = -0.05f;
 	
@@ -32,9 +31,6 @@ public class PhysicsEngine {
 				object.integrate(delta);
 			    
 		}
-	}
-	public void setLunarLander(LunarLander ll) {
-		this.lunarLander = ll;
 	}
 	public void handleCollisions() {
 		IntersectData intersectData = mObjects.get(0).getCollider()

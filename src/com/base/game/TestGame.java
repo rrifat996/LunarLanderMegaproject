@@ -27,6 +27,7 @@ import com.base.physics.PhysicsObject;
 import physicsObjects.LunarLander;
 import physicsObjects.Platform;
 import physicsObjects.Star;
+import physicsObjects.Test;
 
 public class TestGame implements ILogic{
 	
@@ -37,7 +38,9 @@ public class TestGame implements ILogic{
 	private final WindowManager window;
 	private final PhysicsEngine physEngine;
 	
-	private Entity lunarLander;
+	private Entity centerEntity ;
+
+	
 	int counter =0 ;
 	
 	private List<Entity> entities;
@@ -64,11 +67,23 @@ public class TestGame implements ILogic{
 		Model starModel = loader.loadOBJModel("./src/models/star.obj");
 		starModel.setTexture(new Texture(loader.loadTexture("./textures/yellow.jpg")));
 		
-		Model landerModel = loader.loadOBJModel("./src/models/lunar_lander.obj");
-		landerModel.setTexture(new Texture(loader.loadTexture("./textures/grid.jpg")));
 		
 		Model cubeModel = loader.loadOBJModel("./src/models/cube.txt");
 		cubeModel.setTexture(new Texture(loader.loadTexture("./textures/gray.jpg")));
+		
+		Model cubeModel1 = loader.loadOBJModel("./src/models/cube.txt");
+		cubeModel1.setTexture(new Texture(loader.loadTexture("./textures/blue.jpg")));
+		
+		Model sphereModel1 = loader.loadOBJModel("./src/models/sphere.txt");
+		sphereModel1.setTexture(new Texture(loader.loadTexture("./textures/grid.jpg")));
+		Model sphereModel2 = loader.loadOBJModel("./src/models/sphere.txt");
+		sphereModel2.setTexture(new Texture(loader.loadTexture("./textures/grid.jpg")));
+		Model sphereModel3 = loader.loadOBJModel("./src/models/sphere.txt");
+		sphereModel3.setTexture(new Texture(loader.loadTexture("./textures/grid.jpg")));
+		Model sphereModel4 = loader.loadOBJModel("./src/models/sphere.txt");
+		sphereModel4.setTexture(new Texture(loader.loadTexture("./textures/grid.jpg")));
+		
+		
 		
 		//STARS
 		entities = new ArrayList<>();
@@ -82,26 +97,31 @@ public class TestGame implements ILogic{
 							 rnd.nextFloat() * 180, 0), 0.05f);
 			entities.add(star);
 		}
-		
 		Entity platform = new Platform(cubeModel, new Vector3f(0,-64,0), new Vector3f(0,0,0), -16f,50);
 		entities.add(platform);
 		
-		Entity lunarLander = new LunarLander(landerModel, new Vector3f(0,0,0),new Vector3f(270,0,0), 1);
-		entities.add(lunarLander);
+		Entity center = new Test(cubeModel1, new Vector3f(0,0,0), new Vector3f(0,0,0), 1);
+		entities.add(center);
+		this.centerEntity = center;
 		
-		this.lunarLander = lunarLander;
+		Entity spherEntity1 = new Test(sphereModel1, new Vector3f(5,0,5), new Vector3f(0,0,0), 1);
+		entities.add(spherEntity1);
+		Entity spherEntity2 = new Test(sphereModel2, new Vector3f(5,0,-5), new Vector3f(0,0,0), 1);
+		entities.add(spherEntity2);
+		Entity spherEntity3 = new Test(sphereModel3, new Vector3f(-5,0,-5), new Vector3f(0,0,0), 1);
+		entities.add(spherEntity3);
+		Entity spherEntity4 = new Test(sphereModel4, new Vector3f(-5,0,5), new Vector3f(0,0,0), 1);
+		entities.add(spherEntity4);
 		
+
 		
-		LunarLander lunarLander2 = (LunarLander)lunarLander;
-		physEngine.setLunarLander(lunarLander2);
-		
-		for (PhysicsObject obj : lunarLander.getHitpoints()) {
-			physEngine.addObject(obj);
-		}
 		physEngine.addObject(platform.getHitpoints().get(0));
 		
 		
+		centerEntity.setV(new Vector3f(0,0,0));
+		centerEntity.setW(new Vector3f(0,0.05f,0));
 		
+		centerEntity.setPtrs(spherEntity1, spherEntity2, spherEntity3, spherEntity4);
 	}
 
 	@Override
@@ -125,8 +145,7 @@ public class TestGame implements ILogic{
 
 	@Override
 	public void update(float interval, MouseInput mouseInput) {
-		lunarLander.setRotation(0,0 , counter++);
-		
+		centerEntity.transformation();
 		camera.movePosition(
 				cameraInc.x * CAMERA_MOVEMENT_SPEED, 
 				cameraInc.y * CAMERA_MOVEMENT_SPEED,
@@ -144,6 +163,8 @@ public class TestGame implements ILogic{
 			renderer.processEntities(entity);
 		}
 	}
+
+	
 
 	@Override
 	public void render() {
