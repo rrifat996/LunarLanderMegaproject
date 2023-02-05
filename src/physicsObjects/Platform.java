@@ -16,7 +16,7 @@ public class Platform extends Entity{
 	
 	public Platform(Model model, Vector3f pos, Vector3f rotation, float distance, float scale) {
 		super(model, pos, rotation, scale);
-		Collider plane = new Plane(new Vector3f(1,0,0), -3);
+		Collider plane = new Plane(new Vector3f(0,1,0), distance);
 		hitpoint1 = new PhysicsObject(new Vector3f(0,0,0), plane);
 	}
 

@@ -20,6 +20,12 @@ public abstract class Entity {
 	}
 	abstract public ArrayList<PhysicsObject> getHitpoints();
 	
+	public void thrust(int choice) {
+		if(choice == 0) {
+			
+		}
+	}
+	
 	public void incPos(float x, float y, float z) {
 		this.pos.x += x;
 		this.pos.y += y;

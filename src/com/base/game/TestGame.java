@@ -37,6 +37,9 @@ public class TestGame implements ILogic{
 	private final WindowManager window;
 	private final PhysicsEngine physEngine;
 	
+	private Entity lunarLander;
+	int counter =0 ;
+	
 	private List<Entity> entities;
 	private List<Terrain> terrains;
 	private Camera camera;
@@ -80,18 +83,22 @@ public class TestGame implements ILogic{
 			entities.add(star);
 		}
 		
-		Entity platform = new Platform(cubeModel, new Vector3f(0,-63,-5), new Vector3f(0,0,0), -63f,50);
+		Entity platform = new Platform(cubeModel, new Vector3f(0,-64,0), new Vector3f(0,0,0), -16f,50);
 		entities.add(platform);
 		
 		Entity lunarLander = new LunarLander(landerModel, new Vector3f(0,0,0),new Vector3f(270,0,0), 1);
 		entities.add(lunarLander);
 		
+		this.lunarLander = lunarLander;
+		
+		
+		LunarLander lunarLander2 = (LunarLander)lunarLander;
+		physEngine.setLunarLander(lunarLander2);
+		
 		for (PhysicsObject obj : lunarLander.getHitpoints()) {
-			System.out.println(obj.getmVelocity().length());
 			physEngine.addObject(obj);
 		}
 		physEngine.addObject(platform.getHitpoints().get(0));
-		System.out.println(platform.getHitpoints().get(0).getmVelocity().length());
 		
 		
 		
@@ -118,8 +125,7 @@ public class TestGame implements ILogic{
 
 	@Override
 	public void update(float interval, MouseInput mouseInput) {
-		physEngine.simulate(interval);
-		physEngine.handleCollisions();
+		lunarLander.setRotation(0,0 , counter++);
 		
 		camera.movePosition(
 				cameraInc.x * CAMERA_MOVEMENT_SPEED, 

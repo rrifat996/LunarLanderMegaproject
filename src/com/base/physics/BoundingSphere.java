@@ -23,13 +23,15 @@ public class BoundingSphere extends Collider{
 	}
 	public IntersectData intersectBoundingSphere(BoundingSphere other) {
 		float radiusDistance = mRadius + other.getRadius();
-		Vector3f direction = other.getmCenter().sub(mCenter);
-		float centerDistance = direction.length();
+		Vector3f direction = new Vector3f(other.getmCenter());
+		direction.sub(mCenter);
+		float centerDistance = Math.abs(direction.length());
 		direction.normalize();  
 		
-		float distance = centerDistance - radiusDistance;
+		//System.out.println(radiusDistance);
+		//System.out.println(centerDistance);
 		
-		return new IntersectData(distance < 0, direction.mul(distance));
+		return new IntersectData(centerDistance < radiusDistance, direction.mul(centerDistance));
 	}
 	
 	

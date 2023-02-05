@@ -50,6 +50,7 @@ public class LunarLander extends Entity{
 		list.add(hitpoint4);
 		return list;
 	}
+	
 
 	public PhysicsObject getHitpointCenter() {
 		return hitpointCenter;

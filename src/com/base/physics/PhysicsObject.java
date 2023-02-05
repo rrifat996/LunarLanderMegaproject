@@ -26,7 +26,8 @@ public class PhysicsObject {
 
 	}
 	public void integrate(float delta) {
-		 mPosition.add(mVelocity.mul(delta));
+		Vector3f goVec = new Vector3f(mVelocity);
+		 mPosition.add(goVec.mul(delta));
 	}
 	
 	public Vector3f getmPosition() {

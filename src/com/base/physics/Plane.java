@@ -18,10 +18,13 @@ public class Plane extends Collider{
 	}
 	
 	IntersectData intersectSphere(BoundingSphere other) {
-		float distanceFromSphereCenter = Math.abs(mNormal.dot(other.getmCenter()) + mDistance);
+		//System.out.println(" ** "  + mNormal);
+		Vector3f newNormal = new Vector3f(mNormal);
+		float distanceFromSphereCenter = Math.abs(-1 * newNormal.dot(other.getmCenter()) + mDistance);
 		float distanceFromSphere = distanceFromSphereCenter - other.getRadius();
-		
-		return new IntersectData(distanceFromSphere < 0, mNormal.mul(distanceFromSphere));
+		//System.out.println(distanceFromSphere);
+		newNormal = new Vector3f(mNormal);
+		return new IntersectData(distanceFromSphere < 0, newNormal.mul(distanceFromSphere));
 	}
 	public Plane Normalized() {
 		float magnitude = mNormal.length();

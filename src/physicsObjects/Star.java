@@ -15,7 +15,7 @@ public class Star extends Entity{
 
 	public Star(Model model, Vector3f pos, Vector3f rotation, float scale) {
 		super(model, pos, rotation, scale);
-		Collider sphere0 = new BoundingSphere(pos, scale / 100f);
+		Collider sphere0 = new BoundingSphere(pos, 0.0001f);
 		hitpoint1 = new PhysicsObject(new Vector3f(0,0,0), sphere0);
 	}
 
