@@ -32,7 +32,10 @@ public abstract class Entity {
 	
 	abstract public void transform(Vector3f v, Vector3f w);
 	
-	abstract public void setPtrs(Entity spherEntity1, Entity spherEntity2, Entity spherEntity3 ,Entity spherEntity4);
+	abstract public Vector3f getDir1();
+	abstract public Vector3f getDir2();
+	abstract public Vector3f getDir3();
+	abstract public Vector3f getDir4();
 	
 	public void incPos(float x, float y, float z) {
 		this.pos.x += x;

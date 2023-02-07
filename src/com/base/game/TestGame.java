@@ -40,6 +40,7 @@ public class TestGame implements ILogic{
 	
 	private Entity centerEntity ;
 
+	private int updateCounter = 0;
 	
 	int counter =0 ;
 	
@@ -48,6 +49,11 @@ public class TestGame implements ILogic{
 	private Camera camera;
 	
 	private Vector3f cameraInc;
+	
+	private Entity spherEntity1;
+	private Entity spherEntity2;
+	private Entity spherEntity3;
+	private Entity spherEntity4;
 	
 	
 	public TestGame() {
@@ -70,6 +76,9 @@ public class TestGame implements ILogic{
 		
 		Model cubeModel = loader.loadOBJModel("./src/models/cube.txt");
 		cubeModel.setTexture(new Texture(loader.loadTexture("./textures/gray.jpg")));
+		
+		Model landerModel = loader.loadOBJModel("./src/models/lunar_lander.obj");
+		landerModel.setTexture(new Texture(loader.loadTexture("./textures/gray.jpg")));
 		
 		Model cubeModel1 = loader.loadOBJModel("./src/models/cube.txt");
 		cubeModel1.setTexture(new Texture(loader.loadTexture("./textures/blue.jpg")));
@@ -100,7 +109,7 @@ public class TestGame implements ILogic{
 		Entity platform = new Platform(cubeModel, new Vector3f(0,-64,0), new Vector3f(0,0,0), -16f,50);
 		entities.add(platform);
 		
-		Entity center = new Test(cubeModel1, new Vector3f(0,0,0), new Vector3f(0,0,0), 1);
+		Entity center = new Test(landerModel, new Vector3f(0,0,0), new Vector3f(0,0,0), 1);
 		entities.add(center);
 		this.centerEntity = center;
 		
@@ -113,15 +122,19 @@ public class TestGame implements ILogic{
 		Entity spherEntity4 = new Test(sphereModel4, new Vector3f(-5,0,5), new Vector3f(0,0,0), 1);
 		entities.add(spherEntity4);
 		
+		this.spherEntity1 = spherEntity1;
+		this.spherEntity2 = spherEntity2;
+		this.spherEntity3 = spherEntity3;
+		this.spherEntity4 = spherEntity4;
+		
 
 		
 		physEngine.addObject(platform.getHitpoints().get(0));
 		
 		
-		centerEntity.setV(new Vector3f(0,0,0));
-		centerEntity.setW(new Vector3f(0,0.05f,0));
+		centerEntity.setV(new Vector3f(0.05f,0,0));
+		centerEntity.setW(new Vector3f(1,0,0));
 		
-		centerEntity.setPtrs(spherEntity1, spherEntity2, spherEntity3, spherEntity4);
 	}
 
 	@Override
@@ -142,10 +155,33 @@ public class TestGame implements ILogic{
 		if(window.isKeyPressed(GLFW.GLFW_KEY_SPACE))
 			cameraInc.y = 1;
 	}
+	public void setPosSpheres() {
+		spherEntity1.getPos().x  = centerEntity.getPos().x + centerEntity.getDir1().x;
+		spherEntity1.getPos().y  = centerEntity.getPos().y + centerEntity.getDir1().y;
+		spherEntity1.getPos().z  = centerEntity.getPos().z + centerEntity.getDir1().z;
+		
+		spherEntity2.getPos().x  = centerEntity.getPos().x + centerEntity.getDir2().x;
+		spherEntity2.getPos().y  = centerEntity.getPos().y + centerEntity.getDir2().y;
+		spherEntity2.getPos().z  = centerEntity.getPos().z + centerEntity.getDir2().z;
+		
+		spherEntity3.getPos().x  = centerEntity.getPos().x + centerEntity.getDir3().x;
+		spherEntity3.getPos().y  = centerEntity.getPos().y + centerEntity.getDir3().y;
+		spherEntity3.getPos().z  = centerEntity.getPos().z + centerEntity.getDir3().z;
+		
+		spherEntity4.getPos().x  = centerEntity.getPos().x + centerEntity.getDir4().x;
+		spherEntity4.getPos().y  = centerEntity.getPos().y + centerEntity.getDir4().y;
+		spherEntity4.getPos().z  = centerEntity.getPos().z + centerEntity.getDir4().z;
+	}
 
 	@Override
 	public void update(float interval, MouseInput mouseInput) {
-		centerEntity.transformation();
+		updateCounter++;
+		updateCounter %= 2;
+		if(updateCounter == 1) { // update reduce
+			centerEntity.transformation();
+			setPosSpheres();
+		}
+		
 		camera.movePosition(
 				cameraInc.x * CAMERA_MOVEMENT_SPEED, 
 				cameraInc.y * CAMERA_MOVEMENT_SPEED,

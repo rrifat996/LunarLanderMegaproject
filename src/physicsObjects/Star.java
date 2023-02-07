@@ -31,10 +31,29 @@ public class Star extends Entity{
 		
 	}
 
+
 	@Override
-	public void setPtrs(Entity spherEntity1, Entity spherEntity2, Entity spherEntity3, Entity spherEntity4) {
+	public Vector3f getDir1() {
 		// TODO Auto-generated method stub
-		
+		return null;
+	}
+
+	@Override
+	public Vector3f getDir2() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vector3f getDir3() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vector3f getDir4() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	
