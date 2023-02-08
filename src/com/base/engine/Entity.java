@@ -8,10 +8,15 @@ import com.base.engine.entity.Model;
 import com.base.physics.PhysicsObject;
 
 public abstract class Entity {
-	public static final float delta = 0.05f;
+	public static final Vector3f xAxis = new Vector3f(-1,0,0);
+	public static final Vector3f yAxis = new Vector3f(0,-1,0);
+	public static final Vector3f zAxis = new Vector3f(0,0,-1);
+	
+	private static final float F = 0.0001f;
+	private static final float delta = 0.05f;
 	private Model model;
 	private Vector3f pos, rotation;
-	private Vector3f v, w;
+	private Vector3f v, w , alpha, a;
 	private float scale;
 	
 	public Entity(Model model, Vector3f pos, Vector3f rotation, float scale) {
@@ -19,18 +24,29 @@ public abstract class Entity {
 		this.pos = pos;
 		this.rotation = rotation;
 		this.scale = scale;
+		this.alpha = new Vector3f(0,0,0);
+		this.a = new Vector3f(0,0,0);
 	}
 	abstract public ArrayList<PhysicsObject> getHitpoints();
 	
+	abstract public void angleTransformer(ArrayList<Integer> controlList, Vector3f rotation);
+	abstract public Vector3f getCalculatedAlpha();
+	
 	public void transformation() {
+		Vector3f toAdd3 = new Vector3f(a);
+		Vector3f toAdd4 = new Vector3f(alpha);
+		toAdd3.mul(delta);
+		toAdd4.mul(delta);
+		v.add(toAdd3);
+		w.add(toAdd4);
 		Vector3f toAdd1 = new Vector3f(v);
 		pos.add(toAdd1);
 		Vector3f toAdd2 = new Vector3f(w);
 		rotation.add(toAdd2);
-		transform(v, w);
+		transform(w);
 	}
 	
-	abstract public void transform(Vector3f v, Vector3f w);
+	abstract public void transform(Vector3f w);
 	
 	abstract public Vector3f getDir1();
 	abstract public Vector3f getDir2();
@@ -82,7 +98,26 @@ public abstract class Entity {
 	public void setW(Vector3f w) {
 		this.w = w;
 	}
+	public Vector3f getAlpha() {
+		return alpha;
+	}
+	public Vector3f getA() {
+		return a;
+	}
+	public void setAlpha(float x, float y, float z) {
+		this.rotation.x = x;
+		this.rotation.y = y;
+		this.rotation.z = z;
+	}
 	
+	public void setAlpha(Vector3f alpha) {
+		this.alpha = alpha;
+	}
+	public void setA(float x, float y, float z) {
+		this.rotation.x = x;
+		this.rotation.y = y;
+		this.rotation.z = z;
+	}
 	
 	
 }

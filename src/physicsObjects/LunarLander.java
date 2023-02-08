@@ -91,13 +91,6 @@ public class LunarLander extends Entity{
 	public void setHitpoint4(PhysicsObject hitpoint4) {
 		this.hitpoint4 = hitpoint4;
 	}
-
-	@Override
-	public void transform(Vector3f v, Vector3f w) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	
 
 	@Override
@@ -120,6 +113,24 @@ public class LunarLander extends Entity{
 
 	@Override
 	public Vector3f getDir4() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void angleTransformer(ArrayList<Integer> controlList, Vector3f rotation) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void transform(Vector3f w) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Vector3f getCalculatedAlpha() {
 		// TODO Auto-generated method stub
 		return null;
 	}

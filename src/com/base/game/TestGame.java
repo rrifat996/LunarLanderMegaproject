@@ -30,7 +30,6 @@ import physicsObjects.Star;
 import physicsObjects.Test;
 
 public class TestGame implements ILogic{
-	
 	private static final float CAMERA_MOVEMENT_SPEED = 0.2f;
 	
 	private final RenderManager renderer;
@@ -45,7 +44,6 @@ public class TestGame implements ILogic{
 	int counter =0 ;
 	
 	private List<Entity> entities;
-	private List<Terrain> terrains;
 	private Camera camera;
 	
 	private Vector3f cameraInc;
@@ -54,6 +52,9 @@ public class TestGame implements ILogic{
 	private Entity spherEntity2;
 	private Entity spherEntity3;
 	private Entity spherEntity4;
+	
+	private boolean engine1Requested = false;
+	private boolean engine2Requested = false;
 	
 	
 	public TestGame() {
@@ -73,7 +74,6 @@ public class TestGame implements ILogic{
 		Model starModel = loader.loadOBJModel("./src/models/star.obj");
 		starModel.setTexture(new Texture(loader.loadTexture("./textures/yellow.jpg")));
 		
-		
 		Model cubeModel = loader.loadOBJModel("./src/models/cube.txt");
 		cubeModel.setTexture(new Texture(loader.loadTexture("./textures/gray.jpg")));
 		
@@ -91,8 +91,6 @@ public class TestGame implements ILogic{
 		sphereModel3.setTexture(new Texture(loader.loadTexture("./textures/grid.jpg")));
 		Model sphereModel4 = loader.loadOBJModel("./src/models/sphere.txt");
 		sphereModel4.setTexture(new Texture(loader.loadTexture("./textures/grid.jpg")));
-		
-		
 		
 		//STARS
 		entities = new ArrayList<>();
@@ -127,13 +125,10 @@ public class TestGame implements ILogic{
 		this.spherEntity3 = spherEntity3;
 		this.spherEntity4 = spherEntity4;
 		
-
-		
 		physEngine.addObject(platform.getHitpoints().get(0));
 		
-		
-		centerEntity.setV(new Vector3f(0.05f,0,0));
-		centerEntity.setW(new Vector3f(1,0,0));
+		centerEntity.setV(new Vector3f(0,0,0));
+		centerEntity.setW(new Vector3f(0,0,0));
 		
 	}
 
@@ -154,6 +149,9 @@ public class TestGame implements ILogic{
 			cameraInc.y = -1;
 		if(window.isKeyPressed(GLFW.GLFW_KEY_SPACE))
 			cameraInc.y = 1;
+		
+		if(window.isKeyPressed(GLFW.GLFW_KEY_1))	engine1Requested = true;
+		if(window.isKeyPressed(GLFW.GLFW_KEY_2))	engine2Requested = true;
 	}
 	public void setPosSpheres() {
 		spherEntity1.getPos().x  = centerEntity.getPos().x + centerEntity.getDir1().x;
@@ -172,14 +170,37 @@ public class TestGame implements ILogic{
 		spherEntity4.getPos().y  = centerEntity.getPos().y + centerEntity.getDir4().y;
 		spherEntity4.getPos().z  = centerEntity.getPos().z + centerEntity.getDir4().z;
 	}
-
+	public void thrust() {
+		ArrayList<Integer> controlList = new ArrayList<>();
+		if(engine1Requested) {
+			controlList.add(1);
+			engine1Requested = false;
+		}
+		if(engine2Requested) {
+			controlList.add(2);
+			engine2Requested = false;
+		}
+		
+		if(controlList.size() == 0) {
+			centerEntity.setA(0,0,0);
+			centerEntity.setAlpha(0,0,0);
+		}
+		else {
+			centerEntity.angleTransformer(controlList, centerEntity.getRotation());
+			centerEntity.setAlpha(centerEntity.getCalculatedAlpha());
+			controlList.clear();
+		}
+	}
 	@Override
 	public void update(float interval, MouseInput mouseInput) {
+		//System.out.println(centerEntity.getDir1());
 		updateCounter++;
 		updateCounter %= 2;
-		if(updateCounter == 1) { // update reduce
+		if(updateCounter == 1) { // update reduces
 			centerEntity.transformation();
 			setPosSpheres();
+			thrust();
+
 		}
 		
 		camera.movePosition(
