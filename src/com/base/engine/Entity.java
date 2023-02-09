@@ -35,14 +35,18 @@ public abstract class Entity {
 	public void transformation() {
 		Vector3f toAdd3 = new Vector3f(a);
 		Vector3f toAdd4 = new Vector3f(alpha);
+		
 		toAdd3.mul(delta);
 		toAdd4.mul(delta);
+		
 		v.add(toAdd3);
 		w.add(toAdd4);
 		Vector3f toAdd1 = new Vector3f(v);
-		pos.add(toAdd1);
 		Vector3f toAdd2 = new Vector3f(w);
+
+		pos.add(toAdd1);
 		rotation.add(toAdd2);
+		
 		transform(w);
 	}
 	
@@ -105,18 +109,18 @@ public abstract class Entity {
 		return a;
 	}
 	public void setAlpha(float x, float y, float z) {
-		this.rotation.x = x;
-		this.rotation.y = y;
-		this.rotation.z = z;
+		this.alpha.x = x;
+		this.alpha.y = y;
+		this.alpha.z = z;
 	}
 	
 	public void setAlpha(Vector3f alpha) {
 		this.alpha = alpha;
 	}
 	public void setA(float x, float y, float z) {
-		this.rotation.x = x;
-		this.rotation.y = y;
-		this.rotation.z = z;
+		this.a.x = x;
+		this.a.y = y;
+		this.a.z = z;
 	}
 	
 	

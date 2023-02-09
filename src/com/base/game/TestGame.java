@@ -125,7 +125,7 @@ public class TestGame implements ILogic{
 		this.spherEntity3 = spherEntity3;
 		this.spherEntity4 = spherEntity4;
 		
-		physEngine.addObject(platform.getHitpoints().get(0));
+		//physEngine.addObject(platform.getHitpoints().get(0));
 		
 		centerEntity.setV(new Vector3f(0,0,0));
 		centerEntity.setW(new Vector3f(0,0,0));
@@ -172,14 +172,8 @@ public class TestGame implements ILogic{
 	}
 	public void thrust() {
 		ArrayList<Integer> controlList = new ArrayList<>();
-		if(engine1Requested) {
-			controlList.add(1);
-			engine1Requested = false;
-		}
-		if(engine2Requested) {
-			controlList.add(2);
-			engine2Requested = false;
-		}
+		if(engine1Requested) {	controlList.add(1);	engine1Requested = false;}
+		if(engine2Requested) {	controlList.add(2); engine2Requested = false;}
 		
 		if(controlList.size() == 0) {
 			centerEntity.setA(0,0,0);
@@ -194,14 +188,10 @@ public class TestGame implements ILogic{
 	@Override
 	public void update(float interval, MouseInput mouseInput) {
 		//System.out.println(centerEntity.getDir1());
-		updateCounter++;
-		updateCounter %= 2;
-		if(updateCounter == 1) { // update reduces
-			centerEntity.transformation();
-			setPosSpheres();
-			thrust();
-
-		}
+		centerEntity.transformation();
+		setPosSpheres();
+		thrust();
+		
 		
 		camera.movePosition(
 				cameraInc.x * CAMERA_MOVEMENT_SPEED, 

@@ -32,6 +32,7 @@ public class Test extends Entity{
 		this.dir2 = new Vector3f(5,0,-5);
 		this.dir3 = new Vector3f(-5,0,5);
 		this.dir4 = new Vector3f(-5,0,-5);
+
 		
 		this.thrust1 = new Vector3f(0,5,5);
 		this.thrust2 = new Vector3f(-5,5,0);
@@ -48,36 +49,33 @@ public class Test extends Entity{
 				Vector3f thrustCopy = new Vector3f(thrust1);
 				Vector3f thrustCopy2 = new Vector3f(thrust1);
 
-				
 				Vector3f thrustingDir = new Vector3f(dir1);
 				thrustingDir.cross(dir2);
 				thrustingDir.div(thrustingDir.length()).mul(F);
-				
 				
 				thrustCopy2.add(thrustingDir); 
 				thrustCopy2.div(thrustCopy2.length()).mul(thrustCopy.length());
 				
 				thrustCopy2.sub(thrustCopy);
-				 // xy , zaxis
+				 // xy , zaxiss
 				if (thrustCopy2.y != 0)
 					total.z += Math.toDegrees(Math.atan(thrustCopy2.x / thrustCopy2.y));
 				if (thrustCopy2.x != 0)
 					total.y += Math.toDegrees(Math.atan(thrustCopy2.z / thrustCopy2.x));
 				if (thrustCopy2.z != 0)
 					total.x += Math.toDegrees(Math.atan(thrustCopy2.y / thrustCopy2.z));
-				System.out.println(thrustCopy2.x);System.out.println(thrustCopy2.y);System.out.println(thrustCopy2.z);
-				//System.out.println(thrustCopy.x / thrustCopy.y);
-				//System.out.println(total.x);System.out.println(total.y);System.out.println(total.z);
-				
 			}
 		}
 		calculatedAlpha = total;
 	}
 	public void transform(Vector3f w) {
-		addForDirection(dir1, w);
+		addForDirection(dir1, w);	
 		addForDirection(dir2, w);
+
 		addForDirection(dir3, w);
+
 		addForDirection(dir4, w);
+
 		
 		addForDirection(thrust1, w);
 		addForDirection(thrust2, w);
@@ -88,43 +86,51 @@ public class Test extends Entity{
 		Vector3f toAdd1 = new Vector3f(dir);
 		Vector3f toAdd2 = new Vector3f(dir);
 		Vector3f toAdd3 = new Vector3f(dir);
-		//
 		Vector3f goal = new Vector3f(0,0,0);
 		
+		float reflectedLen = org.joml.Math.sqrt(dir.x * dir.x + dir.y * dir.y);
 		
-		float reflectedLen = dir.z;
-
-		goal.x = -1.0f * (reflectedLen - reflectedLen * org.joml.Math.cos(org.joml.Math.toRadians(w.z)));
-		goal.y =  reflectedLen * org.joml.Math.sin(org.joml.Math.toRadians(w.z));
+		goal.x =  reflectedLen * org.joml.Math.sin(org.joml.Math.toRadians(w.z));
+		goal.y = -1.0f * (reflectedLen - reflectedLen * org.joml.Math.cos(org.joml.Math.toRadians(w.z)));
 		goal.z = 0;
 		float goalLen = goal.length();
 		toAdd1.cross(zAxis);
 		toAdd1.div(toAdd1.length()).mul(goalLen);
-		
-		reflectedLen = dir.y;
-		
+
+		reflectedLen = org.joml.Math.sqrt(dir.x * dir.x + dir.z * dir.z);
 		goal.x =  reflectedLen * org.joml.Math.sin(org.joml.Math.toRadians(w.y));
 		goal.z = -1.0f * (reflectedLen - reflectedLen * org.joml.Math.cos(org.joml.Math.toRadians(w.y)));
 		goal.y = 0;
 		goalLen = goal.length();
 		toAdd2.cross(yAxis);
 		toAdd2.div(toAdd2.length()).mul(goalLen);
-		
-		reflectedLen = dir.x;
-		
-		goal.y = (reflectedLen - reflectedLen * org.joml.Math.cos(org.joml.Math.toRadians(w.x)));
-		goal.z = -1.0f * ( reflectedLen * org.joml.Math.sin(org.joml.Math.toRadians(w.x)));
+
+		reflectedLen = org.joml.Math.sqrt(dir.y * dir.y + dir.z * dir.z);
+		goal.y =  reflectedLen * org.joml.Math.sin(org.joml.Math.toRadians(w.x));
+		goal.z = -1.0f * (reflectedLen - reflectedLen * org.joml.Math.cos(org.joml.Math.toRadians(w.x)));
 		goal.x = 0;
 		goalLen = goal.length();
 		toAdd3.cross(xAxis);
 		toAdd3.div(toAdd3.length()).mul(goalLen);
+
+		dir.x += toAdd1.x;
+		dir.y += toAdd1.y;
 		
-		dir.add(toAdd1);
-		dir.add(toAdd2);
-		dir.add(toAdd3);
+		dir.x += toAdd2.x;
+		dir.z += toAdd2.z;
 		
+
+		dir.y += toAdd3.y;
+		dir.z += toAdd3.z;
+
+
+		//System.out.println(toAdd1.x + " " + toAdd1.y + " " + toAdd1.z);
+		//System.out.println(toAdd2.x + " " + toAdd2.y + " " + toAdd2.z);
+		//System.out.println(toAdd3.x + " " + toAdd3.y + " " + toAdd3.z);
+
 		
-		dir.div(dir.length()).mul((float)Math.sqrt(50f));
+		dir.normalize(org.joml.Math.sqrt(50));
+		
 	}
 	
 	@Override
