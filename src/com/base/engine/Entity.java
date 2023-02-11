@@ -31,6 +31,7 @@ public abstract class Entity {
 	
 	abstract public void angleTransformer(ArrayList<Integer> controlList, Vector3f rotation);
 	abstract public Vector3f getCalculatedAlpha();
+	abstract public Vector3f getCalculatedA();
 	
 	public void transformation() {
 		Vector3f toAdd3 = new Vector3f(a);
@@ -122,6 +123,8 @@ public abstract class Entity {
 		this.a.y = y;
 		this.a.z = z;
 	}
-	
+	public void setA(Vector3f a) {
+		this.a = a;
+	}
 	
 }

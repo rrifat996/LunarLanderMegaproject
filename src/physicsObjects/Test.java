@@ -12,6 +12,7 @@ public class Test extends Entity{
 	public static final Vector3f zAxis = new Vector3f(0,0,-1);
 	
 	public Vector3f calculatedAlpha;
+	public Vector3f calculatedA;
 	
 	public float delta = 0.05f;
 	private static final float F = 0.0001f;
@@ -30,48 +31,91 @@ public class Test extends Entity{
 		super(model, pos, rotation, scale);
 		this.dir1 = new Vector3f(5,0,5);
 		this.dir2 = new Vector3f(5,0,-5);
-		this.dir3 = new Vector3f(-5,0,5);
-		this.dir4 = new Vector3f(-5,0,-5);
+		this.dir3 = new Vector3f(-5,0,-5);
+		this.dir4 = new Vector3f(-5,0,5);
 
 		
 		this.thrust1 = new Vector3f(0,5,5);
-		this.thrust2 = new Vector3f(-5,5,0);
+		this.thrust2 = new Vector3f(5,5,0);
 		this.thrust3 = new Vector3f(0,5,-5);
-		this.thrust4 = new Vector3f(5,5,0);
+		this.thrust4 = new Vector3f(-5,5,0);
 		
 		this.calculatedAlpha = new Vector3f(0,0,0);
+		this.calculatedA = new Vector3f(0,0,0);
 	}
 	public void angleTransformer(ArrayList<Integer> controlList, Vector3f rotation) {
 		Vector3f total = new Vector3f(rotation);
+		Vector3f total2 = new Vector3f(0,0,0);
 
 		for(int i = 0; i < controlList.size(); i++) {
-			if(controlList.get(i) == 1) {
-				Vector3f thrustCopy = new Vector3f(thrust1);
-				Vector3f thrustCopy2 = new Vector3f(thrust1);
-
-				Vector3f thrustingDir = new Vector3f(dir1);
+			Vector3f thrustingDir = new Vector3f(0,0,0);
+			
+			if(controlList.get(i) % 6 == 0) {
+				thrustingDir = new Vector3f(dir1);
 				thrustingDir.cross(dir2);
-				thrustingDir.div(thrustingDir.length()).mul(F);
-				
-				thrustCopy2.add(thrustingDir); 
-				thrustCopy2.div(thrustCopy2.length()).mul(thrustCopy.length());
-				
-				thrustCopy2.sub(thrustCopy);
-				 // xy , zaxiss
-				if (thrustCopy2.y != 0)
-					total.z += Math.toDegrees(Math.atan(thrustCopy2.x / thrustCopy2.y));
-				if (thrustCopy2.x != 0)
-					total.y += Math.toDegrees(Math.atan(thrustCopy2.z / thrustCopy2.x));
-				if (thrustCopy2.z != 0)
-					total.x += Math.toDegrees(Math.atan(thrustCopy2.y / thrustCopy2.z));
+				total2.add(thrustingDir.normalize(F * 1000));}
+			else if(controlList.get(i) % 6 == 1) {
+				thrustingDir = new Vector3f(dir1);
+				thrustingDir.cross(dir2);
+				thrustingDir.mul(-1);
+				total2.add(thrustingDir.normalize(F * 1000));}
+			else if(controlList.get(i) % 6 == 2) {
+				thrustingDir = new Vector3f(dir1);
+				thrustingDir.add(dir2);
+				total2.add(thrustingDir.normalize(F * 1000));}
+			else if(controlList.get(i) % 6 == 3) {
+				thrustingDir = new Vector3f(dir1);
+				thrustingDir.add(dir2);
+				thrustingDir.mul(-1);
+				total2.add(thrustingDir.normalize(F * 1000));}
+			else if(controlList.get(i) % 6 == 4) {
+				thrustingDir = new Vector3f(dir2);
+				thrustingDir.add(dir3);
+				thrustingDir.mul(-1);
+				total2.add(thrustingDir.normalize(F * 1000));	}
+			else if(controlList.get(i) % 6 == 5) {
+				thrustingDir = new Vector3f(dir2);
+				thrustingDir.add(dir3);
+				total2.add(thrustingDir.normalize(F * 1000));}
+			// rotations
+			Vector3f thrustCopy = new Vector3f(0,0,0);
+			Vector3f thrustCopy2 = new Vector3f(0,0,0);
+			
+			if(controlList.get(i) / 4 == 0) {
+				thrustCopy = new Vector3f(thrust1);
+				thrustCopy2 = new Vector3f(thrust1);
 			}
+			else if(controlList.get(i) / 4 == 1) {
+				thrustCopy = new Vector3f(thrust2);
+				thrustCopy2 = new Vector3f(thrust2);		
+			}
+			else if(controlList.get(i) / 4 == 2) {
+				thrustCopy = new Vector3f(thrust3);
+				thrustCopy2 = new Vector3f(thrust3);
+			}
+			else if(controlList.get(i) / 4 == 3) {
+				thrustCopy = new Vector3f(thrust4);
+				thrustCopy2 = new Vector3f(thrust4);
+			}
+			thrustCopy2.add(thrustingDir);
+			thrustCopy2.normalize(thrustCopy.length());
+			
+			thrustCopy2.sub(thrustCopy);
+			
+			if (thrustCopy2.y != 0)
+				total.z += Math.toDegrees(Math.atan(thrustCopy2.x / thrustCopy2.y)* F );
+			if (thrustCopy2.x != 0)
+				total.y += Math.toDegrees(Math.atan(thrustCopy2.z / thrustCopy2.x)* F);
+			if (thrustCopy2.z != 0)
+				total.x += Math.toDegrees(Math.atan(thrustCopy2.y / thrustCopy2.z)* F);
 		}
 		calculatedAlpha = total;
+		calculatedA = total2;
 	}
 	public void transform(Vector3f w) {
 		addForDirection(dir1, w);	
 		addForDirection(dir2, w);
-
+									
 		addForDirection(dir3, w);
 
 		addForDirection(dir4, w);
@@ -163,6 +207,10 @@ public class Test extends Entity{
 	public Vector3f getDir4() {
 		// TODO Auto-generated method stub
 		return dir4;
+	}
+	@Override
+	public Vector3f getCalculatedA() {
+		return calculatedA;
 	}
 	
 }
