@@ -42,6 +42,9 @@ public abstract class Entity {
 		
 		v.add(toAdd3);
 		w.add(toAdd4);
+		
+		//System.out.println(alpha.x + " " + alpha.y + " " + alpha.z);
+		
 		Vector3f toAdd1 = new Vector3f(v);
 		Vector3f toAdd2 = new Vector3f(w);
 

@@ -2,6 +2,8 @@ package physicsObjects;
 
 import java.util.ArrayList;
 import org.joml.Vector3f;
+import org.lwjgl.vulkan.AMDTextureGatherBiasLod;
+
 import com.base.engine.Entity;
 import com.base.engine.entity.Model;
 import com.base.physics.PhysicsObject;
@@ -44,35 +46,37 @@ public class Test extends Entity{
 		this.calculatedA = new Vector3f(0,0,0);
 	}
 	public void angleTransformer(ArrayList<Integer> controlList, Vector3f rotation) {
-		Vector3f total = new Vector3f(rotation);
+		Vector3f total = new Vector3f(0,0,0);
 		Vector3f total2 = new Vector3f(0,0,0);
 
 		for(int i = 0; i < controlList.size(); i++) {
 			Vector3f thrustingDir = new Vector3f(0,0,0);
+			float rev = 1.0f;
 			
 			if(controlList.get(i) % 6 == 0) {
 				thrustingDir = new Vector3f(dir1);
 				thrustingDir.cross(dir2);
-				total2.add(thrustingDir.normalize(F * 1000));}
+				total2.add(thrustingDir.normalize(F * 1000 * -1));
+				rev = -1.0f;}
 			else if(controlList.get(i) % 6 == 1) {
 				thrustingDir = new Vector3f(dir1);
 				thrustingDir.cross(dir2);
-				thrustingDir.mul(-1);
-				total2.add(thrustingDir.normalize(F * 1000));}
+				total2.add(thrustingDir.normalize(F * 1000));
+			}
 			else if(controlList.get(i) % 6 == 2) {
 				thrustingDir = new Vector3f(dir1);
 				thrustingDir.add(dir2);
-				total2.add(thrustingDir.normalize(F * 1000));}
+				total2.add(thrustingDir.normalize(F * 1000 * -1));
+				rev = -1.0f;}
 			else if(controlList.get(i) % 6 == 3) {
 				thrustingDir = new Vector3f(dir1);
 				thrustingDir.add(dir2);
-				thrustingDir.mul(-1);
 				total2.add(thrustingDir.normalize(F * 1000));}
 			else if(controlList.get(i) % 6 == 4) {
 				thrustingDir = new Vector3f(dir2);
 				thrustingDir.add(dir3);
-				thrustingDir.mul(-1);
-				total2.add(thrustingDir.normalize(F * 1000));	}
+				total2.add(thrustingDir.normalize(F * 1000 * -1));	
+				rev = -1.0f;}
 			else if(controlList.get(i) % 6 == 5) {
 				thrustingDir = new Vector3f(dir2);
 				thrustingDir.add(dir3);
@@ -102,24 +106,50 @@ public class Test extends Entity{
 			
 			thrustCopy2.sub(thrustCopy);
 			
-			if (thrustCopy2.y != 0)
-				total.z += Math.toDegrees(Math.atan(thrustCopy2.x / thrustCopy2.y)* F );
-			if (thrustCopy2.x != 0)
-				total.y += Math.toDegrees(Math.atan(thrustCopy2.z / thrustCopy2.x)* F);
-			if (thrustCopy2.z != 0)
-				total.x += Math.toDegrees(Math.atan(thrustCopy2.y / thrustCopy2.z)* F);
+			//xy
+			double tiltxy = Math.sqrt(thrustCopy.x * thrustCopy.x + thrustCopy.y * thrustCopy.y);
+			double lenxy = Math.sqrt(thrustCopy2.x * thrustCopy2.x + thrustCopy2.y * thrustCopy2.y);
+			//xz
+			double tiltxz = Math.sqrt(thrustCopy.x * thrustCopy.x + thrustCopy.z * thrustCopy.z);
+			double lenxz = Math.sqrt(thrustCopy2.x * thrustCopy2.x + thrustCopy2.z * thrustCopy2.z);
+			//yz
+			double tiltyz = Math.sqrt(thrustCopy.z * thrustCopy.z + thrustCopy.y * thrustCopy.y);
+			double lenyz  = Math.sqrt(thrustCopy2.z * thrustCopy2.z + thrustCopy2.y * thrustCopy2.y);
+			
+			
+			boolean rightZ = false;
+			boolean rightY = false;
+			boolean rightX = false;
+			
+			if(thrustCopy.y + thrustingDir.y < 0) rightZ = thrustingDir.x < 0;
+			else rightZ = thrustingDir.x > 0;
+			if(thrustCopy.x + thrustingDir.x < 0) rightY = thrustingDir.z < 0;
+			else rightY = thrustingDir.z > 0;
+			if(thrustCopy.z + thrustingDir.z < 0) rightX = thrustingDir.y < 0;
+			else rightX = thrustingDir.y > 0;
+			
+			System.out.println(thrustCopy.y);
+			
+			if (thrustCopy2.y != 0 && thrustCopy2.x != 0 ) {
+				if (rightZ) total.z += 2 * Math.toDegrees(Math.asin(lenxy / 2 / tiltxy));
+				else total.z -= 2 * Math.toDegrees(Math.asin(lenxy / 2 / tiltxy));}
+			if (thrustCopy2.x != 0 && thrustCopy2.z != 0 ) {
+				if (rightY) total.y += 2 * Math.toDegrees(Math.asin(lenxz / 2 / tiltxz));
+				else total.y -= 2 * Math.toDegrees(Math.asin(lenxz / 2 / tiltxz));}
+			if (thrustCopy2.y != 0 && thrustCopy2.z != 0 ) {
+				if(rightX) total.x += 2 * Math.toDegrees(Math.asin(lenyz / 2 / tiltyz));
+				else total.x -= 2 * Math.toDegrees(Math.asin(lenyz / 2 / tiltyz));	}
+				
+
 		}
 		calculatedAlpha = total;
-		calculatedA = total2;
+		//calculatedA = total2;
 	}
 	public void transform(Vector3f w) {
 		addForDirection(dir1, w);	
 		addForDirection(dir2, w);
-									
 		addForDirection(dir3, w);
-
 		addForDirection(dir4, w);
-
 		
 		addForDirection(thrust1, w);
 		addForDirection(thrust2, w);
@@ -156,22 +186,24 @@ public class Test extends Entity{
 		goalLen = goal.length();
 		toAdd3.cross(xAxis);
 		toAdd3.div(toAdd3.length()).mul(goalLen);
-
+		
+		if(w.z < 0) toAdd1.mul(-1);
+		if(w.y < 0) toAdd2.mul(-1);
+		if(w.x < 0) toAdd3.mul(-1);
+		
+	
 		dir.x += toAdd1.x;
 		dir.y += toAdd1.y;
 		
 		dir.x += toAdd2.x;
 		dir.z += toAdd2.z;
-		
 
 		dir.y += toAdd3.y;
 		dir.z += toAdd3.z;
 
-
 		//System.out.println(toAdd1.x + " " + toAdd1.y + " " + toAdd1.z);
 		//System.out.println(toAdd2.x + " " + toAdd2.y + " " + toAdd2.z);
 		//System.out.println(toAdd3.x + " " + toAdd3.y + " " + toAdd3.z);
-
 		
 		dir.normalize(org.joml.Math.sqrt(50));
 		

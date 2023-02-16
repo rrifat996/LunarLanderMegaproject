@@ -97,7 +97,7 @@ public class TestGame implements ILogic{
 		starModel.setTexture(new Texture(loader.loadTexture("./textures/yellow.jpg")));
 		
 		Model cubeModel = loader.loadOBJModel("./src/models/cube.txt");
-		cubeModel.setTexture(new Texture(loader.loadTexture("./textures/gray.jpg")));
+		cubeModel.setTexture(new Texture(loader.loadTexture("./textures/blue.jpg")));
 		
 		Model landerModel = loader.loadOBJModel("./src/models/lunar_lander.obj");
 		landerModel.setTexture(new Texture(loader.loadTexture("./textures/gray.jpg")));
@@ -129,7 +129,7 @@ public class TestGame implements ILogic{
 		Entity platform = new Platform(cubeModel, new Vector3f(0,-64,0), new Vector3f(0,0,0), -16f,50);
 		entities.add(platform);
 		
-		Entity center = new Test(landerModel, new Vector3f(0,0,0), new Vector3f(0,0,0), 1);
+		Entity center = new Test(cubeModel, new Vector3f(0,0,0), new Vector3f(0,90,0), 1);
 		entities.add(center);
 		this.centerEntity = center;
 		
@@ -148,7 +148,7 @@ public class TestGame implements ILogic{
 		this.spherEntity4 = spherEntity4;
 		
 		//physEngine.addObject(platform.getHitpoints().get(0));
-		
+	
 		centerEntity.setV(new Vector3f(0,0,0));
 		centerEntity.setW(new Vector3f(0,0,0));
 		
@@ -216,19 +216,71 @@ public class TestGame implements ILogic{
 	}
 	public void thrust() {
 		ArrayList<Integer> controlList = new ArrayList<>();
-		if(engine0Requested) {	controlList.add(0);	engine0Requested = false;}
-		if(engine1Requested) {	controlList.add(1); engine1Requested = false;}
-		if(engine2Requested) {	controlList.add(2);	engine2Requested = false;}
-		if(engine3Requested) {	controlList.add(3); engine3Requested = false;}
-		if(engine4Requested) {	controlList.add(4);	engine4Requested = false;}
-		if(engine5Requested) {	controlList.add(5); engine5Requested = false;}
+		if(engine0Requested) {	centerEntity.setRotation(
+				centerEntity.getRotation().x + 1,
+				centerEntity.getRotation().y, 
+				centerEntity.getRotation().z
+				);
+			controlList.add(0);	engine0Requested = false;}
+		if(engine1Requested) {
+			centerEntity.setRotation(
+					centerEntity.getRotation().x,
+					centerEntity.getRotation().y + 1, 
+					centerEntity.getRotation().z
+					);
+			controlList.add(1); 
+			engine1Requested = false;}
+		if(engine2Requested) {	centerEntity.setRotation(
+				centerEntity.getRotation().x,
+				centerEntity.getRotation().y, 
+				centerEntity.getRotation().z + 1
+				);
+		controlList.add(2);
+		engine2Requested = false;}
+		if(engine3Requested) {centerEntity.setRotation(
+				centerEntity.getRotation().x - 1,
+				centerEntity.getRotation().y, 
+				centerEntity.getRotation().z
+				);
+		controlList.add(3); engine3Requested = false;}
+		if(engine4Requested) {centerEntity.setRotation(
+				centerEntity.getRotation().x,
+				centerEntity.getRotation().y - 1, 
+				centerEntity.getRotation().z
+				);
+		controlList.add(4);	engine4Requested = false;}
+		if(engine5Requested) {centerEntity.setRotation(
+				centerEntity.getRotation().x,
+				centerEntity.getRotation().y, 
+				centerEntity.getRotation().z - 1
+				);
+		
+		controlList.add(5); engine5Requested = false;}
+		if(engine6Requested) {	controlList.add(6); engine6Requested = false;}
+		if(engine7Requested) {	controlList.add(7);	engine7Requested = false;}
+		if(engine8Requested) {	controlList.add(8); engine8Requested = false;}
+		if(engine9Requested) {	controlList.add(9);	engine9Requested = false;}
+		if(engineERequested) {	controlList.add(10);engineERequested = false;}
+		if(engineRRequested) {	controlList.add(11);engineRRequested = false;}
+		if(engineTRequested) {	controlList.add(12);engineTRequested = false;}
+		if(engineYRequested) {	controlList.add(13);engineYRequested = false;}
+		if(engineURequested) {	controlList.add(14);engineURequested = false;}
+		if(engineIRequested) {	controlList.add(15);engineIRequested = false;}
+		if(engineORequested) {	controlList.add(16);engineORequested = false;}
+		if(enginePRequested) {	controlList.add(17);enginePRequested = false;}
+		if(engineFRequested) {	controlList.add(18);engineFRequested = false;}
+		if(engineGRequested) {	controlList.add(19);engineGRequested = false;}
+		if(engineHRequested) {	controlList.add(20);engineHRequested = false;}
+		if(engineJRequested) {	controlList.add(21);engineJRequested = false;}
+		if(engineKRequested) {	controlList.add(22);engineKRequested = false;}
+		if(engineLRequested) {	controlList.add(23);engineLRequested = false;}
 		
 		if(controlList.size() == 0) {
 			centerEntity.setA(0,0,0);
 			centerEntity.setAlpha(0,0,0);
 		}
-		else {
-			centerEntity.angleTransformer(controlList, centerEntity.getRotation());
+		else { 
+		//	centerEntity.angleTransformer(controlList, centerEntity.getRotation());
 			centerEntity.setAlpha(centerEntity.getCalculatedAlpha());
 			centerEntity.setA(centerEntity.getCalculatedA());
 			controlList.clear();
@@ -237,10 +289,10 @@ public class TestGame implements ILogic{
 	@Override
 	public void update(float interval, MouseInput mouseInput) {
 		//System.out.println(centerEntity.getDir1());
+		thrust();
+		//System.out.println(centerEntity.getAlpha());
 		centerEntity.transformation();
 		setPosSpheres();
-		thrust();
-		//System.out.println(centerEntity.getW().x);
 		
 		camera.movePosition(
 				cameraInc.x * CAMERA_MOVEMENT_SPEED, 
