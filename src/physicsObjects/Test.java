@@ -67,37 +67,38 @@ public class Test extends Entity{
 				thrustingDir.mul(-1);
 				total2.add(thrustingDir.normalize(1));}
 			else if(controlList.get(i) % 6 == 2) {
-				thrustingDir = new Vector3f(dir1);
-				thrustingDir.add(dir2);
+				thrustingDir = new Vector3f(dir2);
+				thrustingDir.sub(dir3);
 				total2.add(thrustingDir.normalize(1));}
 			else if(controlList.get(i) % 6 == 3) {
-				thrustingDir = new Vector3f(dir1);
-				thrustingDir.add(dir2);
+				thrustingDir = new Vector3f(dir2);
+				thrustingDir.sub(dir3);
 				thrustingDir.mul(-1);
 				total2.add(thrustingDir.normalize(1));}
 			else if(controlList.get(i) % 6 == 4) {
 				thrustingDir = new Vector3f(dir2);
-				thrustingDir.add(dir3);
+				thrustingDir.sub(dir1);
 				total2.add(thrustingDir.normalize(1));}
 			else if(controlList.get(i) % 6 == 5) {
 				thrustingDir = new Vector3f(dir2);
-				thrustingDir.add(dir3);
+				thrustingDir.sub(dir1);
 				thrustingDir.mul(-1);
 				total2.add(thrustingDir.normalize(1));}
 			// rotations
 			Vector3f thrustPtr = new Vector3f(0,0,0);
 			
-			if(controlList.get(i) / 4 == 0)		thrustPtr = new Vector3f(thrust1);
-			else if(controlList.get(i) / 4 == 1)thrustPtr = new Vector3f(thrust2);
-			else if(controlList.get(i) / 4 == 2)thrustPtr = new Vector3f(thrust3);
-			else if(controlList.get(i) / 4 == 3)thrustPtr = new Vector3f(thrust4);
+			if(controlList.get(i) / 6 == 0)		thrustPtr = new Vector3f(thrust1);
+			else if(controlList.get(i) / 6 == 1)thrustPtr = new Vector3f(thrust2);
+			else if(controlList.get(i) / 6 == 2)thrustPtr = new Vector3f(thrust3);
+			else if(controlList.get(i) / 6 == 3)thrustPtr = new Vector3f(thrust4);
+		
 			
-			thrustPtr.cross(thrustingDir).normalize(1); // random val
-			
+			thrustPtr.cross(thrustingDir).normalize(0.05f); // random val
+
 			total.add(thrustPtr);
 		}
 		calculatedAlpha = total;
-		//calculatedA = total2;
+		calculatedA = total2;
 	}
 	public void transform(Vector3f w) {
 		addForDirection(dir1, w);	
@@ -109,8 +110,6 @@ public class Test extends Entity{
 		addForDirection(thrust2, w);
 		addForDirection(thrust3, w);
 		addForDirection(thrust4, w);
-		
-		//System.out.println(thrust1);
 	}
 	public void addForDirection(Vector3f dir, Vector3f w) {
 		Quaternionf dest1 = new Quaternionf();

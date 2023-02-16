@@ -195,7 +195,7 @@ public class TestGame implements ILogic{
 		if(window.isKeyPressed(GLFW.GLFW_KEY_H))	engineHRequested = true;
 		if(window.isKeyPressed(GLFW.GLFW_KEY_J))	engineJRequested = true;
 		if(window.isKeyPressed(GLFW.GLFW_KEY_K))	engineKRequested = true;
-		if(window.isKeyPressed(GLFW.GLFW_KEY_L))	engine5Requested = true;
+		if(window.isKeyPressed(GLFW.GLFW_KEY_L))	engineLRequested = true;
 	}
 	public void setPosSpheres() {
 		spherEntity1.getPos().x  = centerEntity.getPos().x + centerEntity.getDir1().x;
