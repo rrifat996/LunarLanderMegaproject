@@ -2,7 +2,9 @@ package com.base.engine;
 
 import java.util.ArrayList;
 
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 import com.base.engine.entity.Model;
 import com.base.physics.PhysicsObject;
@@ -17,6 +19,7 @@ public abstract class Entity {
 	private Model model;
 	private Vector3f pos, rotation;
 	private Vector3f v, w , alpha, a;
+	private Vector3f alphaA;
 	private float scale;
 	
 	public Entity(Model model, Vector3f pos, Vector3f rotation, float scale) {
@@ -26,6 +29,7 @@ public abstract class Entity {
 		this.scale = scale;
 		this.alpha = new Vector3f(0,0,0);
 		this.a = new Vector3f(0,0,0);
+		this.alphaA = new Vector3f(0,0,0);
 	}
 	abstract public ArrayList<PhysicsObject> getHitpoints();
 	
@@ -38,22 +42,45 @@ public abstract class Entity {
 		Vector3f toAdd4 = new Vector3f(alpha);
 		
 		toAdd3.mul(delta);
-		toAdd4.mul(delta);
 		
 		v.add(toAdd3);
 		w.add(toAdd4);
 		
-		//System.out.println(alpha.x + " " + alpha.y + " " + alpha.z);
-		
 		Vector3f toAdd1 = new Vector3f(v);
-		Vector3f toAdd2 = new Vector3f(w);
-
 		pos.add(toAdd1);
-		rotation.add(toAdd2);
+		
+		rotation.add(w);
 		
 		transform(w);
 	}
-	
+	public void addForDirection(Vector3f dir, Vector3f w) {
+		Quaternionf dest1 = new Quaternionf();
+		Quaternionf dest2 = new Quaternionf();
+		
+        dest1.w = 1f;
+        dest1.x = 0f;
+        dest1.y = 0f;
+        dest1.z = 0f;
+
+        dest2.w = 1f;
+        dest2.x = 0f;
+        dest2.y = 0f;
+        dest2.z = 0f;
+        
+        float x, y, z;
+        x = w.x;
+        y = w.y;
+        z = w.z;
+        
+        x = x % 360.0f;
+        y = y % 360.0f;
+        z = z % 360.0f;
+        
+        dest2.rotateXYZ((float) Math.toRadians(x), (float) Math.toRadians(y), (float) Math.toRadians(z), dest1);
+ 
+        dest1.transform(dir);
+	}
+
 	abstract public void transform(Vector3f w);
 	
 	abstract public Vector3f getDir1();
@@ -129,5 +156,9 @@ public abstract class Entity {
 	public void setA(Vector3f a) {
 		this.a = a;
 	}
-	
+	public void setW(float x, float y, float z) {
+		this.w.x = x;
+		this.w.y = y;
+		this.w.z = z;
+	}
 }

@@ -129,7 +129,7 @@ public class TestGame implements ILogic{
 		Entity platform = new Platform(cubeModel, new Vector3f(0,-64,0), new Vector3f(0,0,0), -16f,50);
 		entities.add(platform);
 		
-		Entity center = new Test(cubeModel, new Vector3f(0,0,0), new Vector3f(0,90,0), 1);
+		Entity center = new Test(cubeModel, new Vector3f(0,0,0), new Vector3f(0,0,0), 1);
 		entities.add(center);
 		this.centerEntity = center;
 		
@@ -216,44 +216,19 @@ public class TestGame implements ILogic{
 	}
 	public void thrust() {
 		ArrayList<Integer> controlList = new ArrayList<>();
-		if(engine0Requested) {	centerEntity.setRotation(
-				centerEntity.getRotation().x + 1,
-				centerEntity.getRotation().y, 
-				centerEntity.getRotation().z
-				);
+		if(engine0Requested) {
 			controlList.add(0);	engine0Requested = false;}
 		if(engine1Requested) {
-			centerEntity.setRotation(
-					centerEntity.getRotation().x,
-					centerEntity.getRotation().y + 1, 
-					centerEntity.getRotation().z
-					);
 			controlList.add(1); 
 			engine1Requested = false;}
-		if(engine2Requested) {	centerEntity.setRotation(
-				centerEntity.getRotation().x,
-				centerEntity.getRotation().y, 
-				centerEntity.getRotation().z + 1
-				);
+		if(engine2Requested) {
 		controlList.add(2);
 		engine2Requested = false;}
-		if(engine3Requested) {centerEntity.setRotation(
-				centerEntity.getRotation().x - 1,
-				centerEntity.getRotation().y, 
-				centerEntity.getRotation().z
-				);
+		if(engine3Requested) {
 		controlList.add(3); engine3Requested = false;}
-		if(engine4Requested) {centerEntity.setRotation(
-				centerEntity.getRotation().x,
-				centerEntity.getRotation().y - 1, 
-				centerEntity.getRotation().z
-				);
+		if(engine4Requested) {
 		controlList.add(4);	engine4Requested = false;}
-		if(engine5Requested) {centerEntity.setRotation(
-				centerEntity.getRotation().x,
-				centerEntity.getRotation().y, 
-				centerEntity.getRotation().z - 1
-				);
+		if(engine5Requested) {
 		
 		controlList.add(5); engine5Requested = false;}
 		if(engine6Requested) {	controlList.add(6); engine6Requested = false;}
@@ -280,7 +255,7 @@ public class TestGame implements ILogic{
 			centerEntity.setAlpha(0,0,0);
 		}
 		else { 
-		//	centerEntity.angleTransformer(controlList, centerEntity.getRotation());
+			centerEntity.angleTransformer(controlList, centerEntity.getRotation());
 			centerEntity.setAlpha(centerEntity.getCalculatedAlpha());
 			centerEntity.setA(centerEntity.getCalculatedA());
 			controlList.clear();
@@ -291,9 +266,10 @@ public class TestGame implements ILogic{
 		//System.out.println(centerEntity.getDir1());
 		thrust();
 		//System.out.println(centerEntity.getAlpha());
-		centerEntity.transformation();
-		setPosSpheres();
 		
+		centerEntity.transformation();
+		
+		setPosSpheres();
 		camera.movePosition(
 				cameraInc.x * CAMERA_MOVEMENT_SPEED, 
 				cameraInc.y * CAMERA_MOVEMENT_SPEED,
@@ -307,9 +283,7 @@ public class TestGame implements ILogic{
 			 mouseInput.setDisplVec(0f, 0f);
  		}
 		
-		for(Entity entity: entities) {
-			renderer.processEntities(entity);
-		}
+		for(Entity entity: entities)	renderer.processEntities(entity);
 	}
 
 	

@@ -1,6 +1,11 @@
 package physicsObjects;
 
 import java.util.ArrayList;
+
+import org.joml.Matrix3d;
+import org.joml.Matrix3dc;
+import org.joml.Matrix3f;
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.lwjgl.vulkan.AMDTextureGatherBiasLod;
 
@@ -51,96 +56,45 @@ public class Test extends Entity{
 
 		for(int i = 0; i < controlList.size(); i++) {
 			Vector3f thrustingDir = new Vector3f(0,0,0);
-			float rev = 1.0f;
 			
 			if(controlList.get(i) % 6 == 0) {
 				thrustingDir = new Vector3f(dir1);
 				thrustingDir.cross(dir2);
-				total2.add(thrustingDir.normalize(F * 1000 * -1));
-				rev = -1.0f;}
+				total2.add(thrustingDir.normalize(1));}
 			else if(controlList.get(i) % 6 == 1) {
 				thrustingDir = new Vector3f(dir1);
 				thrustingDir.cross(dir2);
-				total2.add(thrustingDir.normalize(F * 1000));
-			}
+				thrustingDir.mul(-1);
+				total2.add(thrustingDir.normalize(1));}
 			else if(controlList.get(i) % 6 == 2) {
 				thrustingDir = new Vector3f(dir1);
 				thrustingDir.add(dir2);
-				total2.add(thrustingDir.normalize(F * 1000 * -1));
-				rev = -1.0f;}
+				total2.add(thrustingDir.normalize(1));}
 			else if(controlList.get(i) % 6 == 3) {
 				thrustingDir = new Vector3f(dir1);
 				thrustingDir.add(dir2);
-				total2.add(thrustingDir.normalize(F * 1000));}
+				thrustingDir.mul(-1);
+				total2.add(thrustingDir.normalize(1));}
 			else if(controlList.get(i) % 6 == 4) {
 				thrustingDir = new Vector3f(dir2);
 				thrustingDir.add(dir3);
-				total2.add(thrustingDir.normalize(F * 1000 * -1));	
-				rev = -1.0f;}
+				total2.add(thrustingDir.normalize(1));}
 			else if(controlList.get(i) % 6 == 5) {
 				thrustingDir = new Vector3f(dir2);
 				thrustingDir.add(dir3);
-				total2.add(thrustingDir.normalize(F * 1000));}
+				thrustingDir.mul(-1);
+				total2.add(thrustingDir.normalize(1));}
 			// rotations
-			Vector3f thrustCopy = new Vector3f(0,0,0);
-			Vector3f thrustCopy2 = new Vector3f(0,0,0);
+			Vector3f thrustPtr = new Vector3f(0,0,0);
 			
-			if(controlList.get(i) / 4 == 0) {
-				thrustCopy = new Vector3f(thrust1);
-				thrustCopy2 = new Vector3f(thrust1);
-			}
-			else if(controlList.get(i) / 4 == 1) {
-				thrustCopy = new Vector3f(thrust2);
-				thrustCopy2 = new Vector3f(thrust2);		
-			}
-			else if(controlList.get(i) / 4 == 2) {
-				thrustCopy = new Vector3f(thrust3);
-				thrustCopy2 = new Vector3f(thrust3);
-			}
-			else if(controlList.get(i) / 4 == 3) {
-				thrustCopy = new Vector3f(thrust4);
-				thrustCopy2 = new Vector3f(thrust4);
-			}
-			thrustCopy2.add(thrustingDir);
-			thrustCopy2.normalize(thrustCopy.length());
+			if(controlList.get(i) / 4 == 0)		thrustPtr = new Vector3f(thrust1);
+			else if(controlList.get(i) / 4 == 1)thrustPtr = new Vector3f(thrust2);
+			else if(controlList.get(i) / 4 == 2)thrustPtr = new Vector3f(thrust3);
+			else if(controlList.get(i) / 4 == 3)thrustPtr = new Vector3f(thrust4);
 			
-			thrustCopy2.sub(thrustCopy);
+			thrustPtr.cross(thrustingDir).normalize(1); // random val
 			
-			//xy
-			double tiltxy = Math.sqrt(thrustCopy.x * thrustCopy.x + thrustCopy.y * thrustCopy.y);
-			double lenxy = Math.sqrt(thrustCopy2.x * thrustCopy2.x + thrustCopy2.y * thrustCopy2.y);
-			//xz
-			double tiltxz = Math.sqrt(thrustCopy.x * thrustCopy.x + thrustCopy.z * thrustCopy.z);
-			double lenxz = Math.sqrt(thrustCopy2.x * thrustCopy2.x + thrustCopy2.z * thrustCopy2.z);
-			//yz
-			double tiltyz = Math.sqrt(thrustCopy.z * thrustCopy.z + thrustCopy.y * thrustCopy.y);
-			double lenyz  = Math.sqrt(thrustCopy2.z * thrustCopy2.z + thrustCopy2.y * thrustCopy2.y);
-			
-			
-			boolean rightZ = false;
-			boolean rightY = false;
-			boolean rightX = false;
-			
-			if(thrustCopy.y + thrustingDir.y < 0) rightZ = thrustingDir.x < 0;
-			else rightZ = thrustingDir.x > 0;
-			if(thrustCopy.x + thrustingDir.x < 0) rightY = thrustingDir.z < 0;
-			else rightY = thrustingDir.z > 0;
-			if(thrustCopy.z + thrustingDir.z < 0) rightX = thrustingDir.y < 0;
-			else rightX = thrustingDir.y > 0;
-			
-			System.out.println(thrustCopy.y);
-			
-			if (thrustCopy2.y != 0 && thrustCopy2.x != 0 ) {
-				if (rightZ) total.z += 2 * Math.toDegrees(Math.asin(lenxy / 2 / tiltxy));
-				else total.z -= 2 * Math.toDegrees(Math.asin(lenxy / 2 / tiltxy));}
-			if (thrustCopy2.x != 0 && thrustCopy2.z != 0 ) {
-				if (rightY) total.y += 2 * Math.toDegrees(Math.asin(lenxz / 2 / tiltxz));
-				else total.y -= 2 * Math.toDegrees(Math.asin(lenxz / 2 / tiltxz));}
-			if (thrustCopy2.y != 0 && thrustCopy2.z != 0 ) {
-				if(rightX) total.x += 2 * Math.toDegrees(Math.asin(lenyz / 2 / tiltyz));
-				else total.x -= 2 * Math.toDegrees(Math.asin(lenyz / 2 / tiltyz));	}
-				
-
+			total.add(thrustPtr);
 		}
 		calculatedAlpha = total;
 		//calculatedA = total2;
@@ -155,58 +109,35 @@ public class Test extends Entity{
 		addForDirection(thrust2, w);
 		addForDirection(thrust3, w);
 		addForDirection(thrust4, w);
+		
+		//System.out.println(thrust1);
 	}
 	public void addForDirection(Vector3f dir, Vector3f w) {
-		Vector3f toAdd1 = new Vector3f(dir);
-		Vector3f toAdd2 = new Vector3f(dir);
-		Vector3f toAdd3 = new Vector3f(dir);
-		Vector3f goal = new Vector3f(0,0,0);
+		Quaternionf dest1 = new Quaternionf();
+		Quaternionf dest2 = new Quaternionf();
 		
-		float reflectedLen = org.joml.Math.sqrt(dir.x * dir.x + dir.y * dir.y);
-		
-		goal.x =  reflectedLen * org.joml.Math.sin(org.joml.Math.toRadians(w.z));
-		goal.y = -1.0f * (reflectedLen - reflectedLen * org.joml.Math.cos(org.joml.Math.toRadians(w.z)));
-		goal.z = 0;
-		float goalLen = goal.length();
-		toAdd1.cross(zAxis);
-		toAdd1.div(toAdd1.length()).mul(goalLen);
+        dest1.w = 1f;
+        dest1.x = 0f;
+        dest1.y = 0f;
+        dest1.z = 0f;
 
-		reflectedLen = org.joml.Math.sqrt(dir.x * dir.x + dir.z * dir.z);
-		goal.x =  reflectedLen * org.joml.Math.sin(org.joml.Math.toRadians(w.y));
-		goal.z = -1.0f * (reflectedLen - reflectedLen * org.joml.Math.cos(org.joml.Math.toRadians(w.y)));
-		goal.y = 0;
-		goalLen = goal.length();
-		toAdd2.cross(yAxis);
-		toAdd2.div(toAdd2.length()).mul(goalLen);
-
-		reflectedLen = org.joml.Math.sqrt(dir.y * dir.y + dir.z * dir.z);
-		goal.y =  reflectedLen * org.joml.Math.sin(org.joml.Math.toRadians(w.x));
-		goal.z = -1.0f * (reflectedLen - reflectedLen * org.joml.Math.cos(org.joml.Math.toRadians(w.x)));
-		goal.x = 0;
-		goalLen = goal.length();
-		toAdd3.cross(xAxis);
-		toAdd3.div(toAdd3.length()).mul(goalLen);
-		
-		if(w.z < 0) toAdd1.mul(-1);
-		if(w.y < 0) toAdd2.mul(-1);
-		if(w.x < 0) toAdd3.mul(-1);
-		
-	
-		dir.x += toAdd1.x;
-		dir.y += toAdd1.y;
-		
-		dir.x += toAdd2.x;
-		dir.z += toAdd2.z;
-
-		dir.y += toAdd3.y;
-		dir.z += toAdd3.z;
-
-		//System.out.println(toAdd1.x + " " + toAdd1.y + " " + toAdd1.z);
-		//System.out.println(toAdd2.x + " " + toAdd2.y + " " + toAdd2.z);
-		//System.out.println(toAdd3.x + " " + toAdd3.y + " " + toAdd3.z);
-		
-		dir.normalize(org.joml.Math.sqrt(50));
-		
+        dest2.w = 1f;
+        dest2.x = 0f;
+        dest2.y = 0f;
+        dest2.z = 0f;
+        
+        float x, y, z;
+        x = w.x;// + rotationXYZ.x;// testX;
+        y = w.y;// + rotationXYZ.y;//testY;
+        z = w.z;// + rotationXYZ.z;//testZ;
+        
+        x = x % 360.0f;
+        y = y % 360.0f;
+        z = z % 360.0f;
+        
+        dest2.rotateXYZ((float) Math.toRadians(x), (float) Math.toRadians(y), (float) Math.toRadians(z), dest1);
+ 
+        dest1.transform(dir);
 	}
 	
 	@Override
