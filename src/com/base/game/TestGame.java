@@ -93,17 +93,14 @@ public class TestGame implements ILogic{
 	public void init() throws Exception {
 		renderer.init();
 		
-		Model starModel = loader.loadOBJModel("./src/models/star.obj");
+		Model starModel = loader.loadOBJModel("./src/models/lolostar.obj");
 		starModel.setTexture(new Texture(loader.loadTexture("./textures/yellow.jpg")));
 		
-		Model cubeModel = loader.loadOBJModel("./src/models/cube.txt");
-		cubeModel.setTexture(new Texture(loader.loadTexture("./textures/blue.jpg")));
+		Model planeModel = loader.loadOBJModel("./src/models/cube.txt");
+		planeModel.setTexture(new Texture(loader.loadTexture("./textures/grid2.jpg")));
 		
-		Model landerModel = loader.loadOBJModel("./src/models/lunar_lander.obj");
+		Model landerModel = loader.loadOBJModel("./src/models/lolo2.obj");
 		landerModel.setTexture(new Texture(loader.loadTexture("./textures/gray.jpg")));
-		
-		Model cubeModel1 = loader.loadOBJModel("./src/models/cube.txt");
-		cubeModel1.setTexture(new Texture(loader.loadTexture("./textures/blue.jpg")));
 		
 		Model sphereModel1 = loader.loadOBJModel("./src/models/sphere.txt");
 		sphereModel1.setTexture(new Texture(loader.loadTexture("./textures/grid.jpg")));
@@ -121,25 +118,27 @@ public class TestGame implements ILogic{
 			float x = rnd.nextFloat() * 100 - 50;
 			float y = Math.abs(rnd.nextFloat() * 100 - 50) ;
 			float z = rnd.nextFloat() * 100 - 50;
-			Entity star = new Star(starModel, new Vector3f(x,y,z),
-					new Vector3f(rnd.nextFloat() * 180, 
-							 rnd.nextFloat() * 180, 0), 0.05f);
-			entities.add(star);
+			if(Math.sqrt(x * x + y * y + z * z) > 10) {
+				Entity star = new Star(starModel, new Vector3f(x,y,z),
+						new Vector3f(rnd.nextFloat() * 180, 
+								 rnd.nextFloat() * 180, 0), 0.05f);
+				entities.add(star); 
+			}
 		}
-		Entity platform = new Platform(cubeModel, new Vector3f(0,-64,0), new Vector3f(0,0,0), -16f,50);
+		Entity platform = new Platform(planeModel, new Vector3f(0,-64,0), new Vector3f(0,0,0), -5,50);
 		entities.add(platform);
 		
-		Entity center = new Test(cubeModel, new Vector3f(0,0,0), new Vector3f(0,0,0), 1);
+		Entity center = new Test(landerModel, new Vector3f(0,0,0), new Vector3f(0,0,0), 1);
 		entities.add(center);
 		this.centerEntity = center;
 		
-		Entity spherEntity1 = new Test(sphereModel1, new Vector3f(5,0,5), new Vector3f(0,0,0), 1);
+		Entity spherEntity1 = new Test(sphereModel1, new Vector3f(5,-5,5), new Vector3f(0,0,0), 0.1f);
 		entities.add(spherEntity1);
-		Entity spherEntity2 = new Test(sphereModel2, new Vector3f(5,0,-5), new Vector3f(0,0,0), 1);
+		Entity spherEntity2 = new Test(sphereModel2, new Vector3f(5,-5,-5), new Vector3f(0,0,0), 0.1f);
 		entities.add(spherEntity2);
-		Entity spherEntity3 = new Test(sphereModel3, new Vector3f(-5,0,-5), new Vector3f(0,0,0), 1);
+		Entity spherEntity3 = new Test(sphereModel3, new Vector3f(-5,-5,-5), new Vector3f(0,0,0), 0.1f);
 		entities.add(spherEntity3);
-		Entity spherEntity4 = new Test(sphereModel4, new Vector3f(-5,0,5), new Vector3f(0,0,0), 1);
+		Entity spherEntity4 = new Test(sphereModel4, new Vector3f(-5,-5,5), new Vector3f(0,0,0), 0.1f);
 		entities.add(spherEntity4);
 		
 		this.spherEntity1 = spherEntity1;

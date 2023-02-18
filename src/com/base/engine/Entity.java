@@ -19,7 +19,6 @@ public abstract class Entity {
 	private Model model;
 	private Vector3f pos, rotation;
 	private Vector3f v, w , alpha, a;
-	private Vector3f alphaA;
 	private float scale;
 	
 	public Entity(Model model, Vector3f pos, Vector3f rotation, float scale) {
@@ -51,37 +50,11 @@ public abstract class Entity {
 		
 		rotation.add(w);
 		
-		transform(w);
+		transform(getRotation());
 	}
-	public void addForDirection(Vector3f dir, Vector3f w) {
-		Quaternionf dest1 = new Quaternionf();
-		Quaternionf dest2 = new Quaternionf();
-		
-        dest1.w = 1f;
-        dest1.x = 0f;
-        dest1.y = 0f;
-        dest1.z = 0f;
+	
 
-        dest2.w = 1f;
-        dest2.x = 0f;
-        dest2.y = 0f;
-        dest2.z = 0f;
-        
-        float x, y, z;
-        x = w.x;
-        y = w.y;
-        z = w.z;
-        
-        x = x % 360.0f;
-        y = y % 360.0f;
-        z = z % 360.0f;
-        
-        dest2.rotateXYZ((float) Math.toRadians(x), (float) Math.toRadians(y), (float) Math.toRadians(z), dest1);
- 
-        dest1.transform(dir);
-	}
-
-	abstract public void transform(Vector3f w);
+	abstract public void transform(Vector3f rotation);
 	
 	abstract public Vector3f getDir1();
 	abstract public Vector3f getDir2();

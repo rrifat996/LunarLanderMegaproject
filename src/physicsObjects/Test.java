@@ -36,10 +36,10 @@ public class Test extends Entity{
 
 	public Test(Model model, Vector3f pos, Vector3f rotation, float scale) {
 		super(model, pos, rotation, scale);
-		this.dir1 = new Vector3f(5,0,5);
-		this.dir2 = new Vector3f(5,0,-5);
-		this.dir3 = new Vector3f(-5,0,-5);
-		this.dir4 = new Vector3f(-5,0,5);
+		this.dir1 = new Vector3f(5,-5,5);
+		this.dir2 = new Vector3f(5,-5,-5);
+		this.dir3 = new Vector3f(-5,-5,-5);
+		this.dir4 = new Vector3f(-5,-5,5);
 
 		
 		this.thrust1 = new Vector3f(0,5,5);
@@ -59,12 +59,13 @@ public class Test extends Entity{
 			
 			if(controlList.get(i) % 6 == 0) {
 				thrustingDir = new Vector3f(dir1);
-				thrustingDir.cross(dir2);
-				total2.add(thrustingDir.normalize(1));}
+				thrustingDir.add(dir3);
+				thrustingDir.mul(-1);
+				total2.add(thrustingDir.normalize(1));
+				System.out.println(thrustingDir);}
 			else if(controlList.get(i) % 6 == 1) {
 				thrustingDir = new Vector3f(dir1);
-				thrustingDir.cross(dir2);
-				thrustingDir.mul(-1);
+				thrustingDir.add(dir3);
 				total2.add(thrustingDir.normalize(1));}
 			else if(controlList.get(i) % 6 == 2) {
 				thrustingDir = new Vector3f(dir2);
@@ -98,45 +99,41 @@ public class Test extends Entity{
 			total.add(thrustPtr);
 		}
 		calculatedAlpha = total;
-		calculatedA = total2;
+		//calculatedA = total2;
 	}
-	public void transform(Vector3f w) {
-		addForDirection(dir1, w);	
-		addForDirection(dir2, w);
-		addForDirection(dir3, w);
-		addForDirection(dir4, w);
+	public void transform(Vector3f totalRotation) {
+		addForDirection(dir1, 5.23f,-6.5f,5.23f, totalRotation);	
+		addForDirection(dir2, 5.23f,-6.5f,-5.23f, totalRotation);
+		addForDirection(dir3, -5.23f,-6.5f,-5.23f, totalRotation);
+		addForDirection(dir4, -5.23f,-6.5f,5.23f, totalRotation);
 		
-		addForDirection(thrust1, w);
-		addForDirection(thrust2, w);
-		addForDirection(thrust3, w);
-		addForDirection(thrust4, w);
+		addForDirection(thrust1, 0,1.5f,4.5f, totalRotation);	
+		addForDirection(thrust2, 4.5f,1.5f,0, totalRotation);
+		addForDirection(thrust3, 0,1.5f,-4.5f, totalRotation);
+		addForDirection(thrust4, -4.5f,1.5f,0, totalRotation);
 	}
-	public void addForDirection(Vector3f dir, Vector3f w) {
-		Quaternionf dest1 = new Quaternionf();
-		Quaternionf dest2 = new Quaternionf();
-		
-        dest1.w = 1f;
-        dest1.x = 0f;
-        dest1.y = 0f;
-        dest1.z = 0f;
-
-        dest2.w = 1f;
-        dest2.x = 0f;
-        dest2.y = 0f;
-        dest2.z = 0f;
-        
-        float x, y, z;
-        x = w.x;// + rotationXYZ.x;// testX;
-        y = w.y;// + rotationXYZ.y;//testY;
-        z = w.z;// + rotationXYZ.z;//testZ;
-        
-        x = x % 360.0f;
-        y = y % 360.0f;
-        z = z % 360.0f;
-        
-        dest2.rotateXYZ((float) Math.toRadians(x), (float) Math.toRadians(y), (float) Math.toRadians(z), dest1);
- 
-        dest1.transform(dir);
+	public void addForDirection(Vector3f dir, float basisX, float basisY ,float basisZ, Vector3f totalRotation) {
+		float x = basisX;
+		float y = basisY;
+		float z = basisZ;
+		float newX = x * (float) Math.cos(Math.toRadians(totalRotation.z)) - y * (float) Math.sin(Math.toRadians(totalRotation.z));
+		float newY = x * (float) Math.sin(Math.toRadians(totalRotation.z)) + y * (float) Math.cos(Math.toRadians(totalRotation.z));
+		float newZ = z;
+		x = newX;
+		y = newY;
+		z = newZ;
+		newX = x * (float) Math.cos(Math.toRadians(totalRotation.y)) + z * (float) Math.sin(Math.toRadians(totalRotation.y));
+		newY = y;
+		newZ = -1 * x * (float) Math.sin(Math.toRadians(totalRotation.y)) + z * (float) Math.cos(Math.toRadians(totalRotation.y));
+		x = newX;
+		y = newY;
+		z = newZ;
+		newX = x;
+		newY = y * (float) Math.cos(Math.toRadians(totalRotation.x)) - z * (float) Math.sin(Math.toRadians(totalRotation.x));
+		newZ = y * (float) Math.sin(Math.toRadians(totalRotation.x)) + z * (float) Math.cos(Math.toRadians(totalRotation.x));
+		dir.x = newX;
+		dir.y = newY;
+		dir.z = newZ;
 	}
 	
 	@Override
