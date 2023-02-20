@@ -22,18 +22,33 @@ public class Platform extends Entity{
 
 	@Override
 	public ArrayList<PhysicsObject> getHitpoints() {
-		ArrayList<PhysicsObject> list = new ArrayList<>();
-		list.add(hitpoint1);
-		return list;
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public void transform(Vector3f w) {
+	public void angleTransformer(ArrayList<Integer> controlList, Vector3f rotation) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	
+	@Override
+	public Vector3f getCalculatedAlpha() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vector3f getCalculatedA() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void transform(Vector3f rotation) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	public Vector3f getDir1() {
@@ -58,17 +73,4 @@ public class Platform extends Entity{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public void angleTransformer(ArrayList<Integer> controlList, Vector3f rotation) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Vector3f getCalculatedAlpha() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 }

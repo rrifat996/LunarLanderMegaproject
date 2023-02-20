@@ -125,20 +125,22 @@ public class TestGame implements ILogic{
 				entities.add(star); 
 			}
 		}
-		Entity platform = new Platform(planeModel, new Vector3f(0,-64,0), new Vector3f(0,0,0), -5,50);
+		Entity platform = new Platform(planeModel, new Vector3f(0,-75,0), new Vector3f(0,0,0), -5,50);
 		entities.add(platform);
 		
-		Entity center = new Test(landerModel, new Vector3f(0,0,0), new Vector3f(0,0,0), 1);
+		Entity center = new Test(landerModel, new Vector3f(0,0,0), new Vector3f(30,0,30), 1);
 		entities.add(center);
 		this.centerEntity = center;
 		
-		Entity spherEntity1 = new Test(sphereModel1, new Vector3f(5,-5,5), new Vector3f(0,0,0), 0.1f);
+		physEngine.setCenter(centerEntity);
+		
+		Entity spherEntity1 = new Test(sphereModel1, new Vector3f(5.23f,-6.5f,5.23f), new Vector3f(0,0,0), 0.1f);
 		entities.add(spherEntity1);
-		Entity spherEntity2 = new Test(sphereModel2, new Vector3f(5,-5,-5), new Vector3f(0,0,0), 0.1f);
+		Entity spherEntity2 = new Test(sphereModel2, new Vector3f(5.23f,-6.5f,-5.23f), new Vector3f(0,0,0), 0.1f);
 		entities.add(spherEntity2);
-		Entity spherEntity3 = new Test(sphereModel3, new Vector3f(-5,-5,-5), new Vector3f(0,0,0), 0.1f);
+		Entity spherEntity3 = new Test(sphereModel3, new Vector3f(-5.23f,-6.5f,-5.23f), new Vector3f(0,0,0), 0.1f);
 		entities.add(spherEntity3);
-		Entity spherEntity4 = new Test(sphereModel4, new Vector3f(-5,-5,5), new Vector3f(0,0,0), 0.1f);
+		Entity spherEntity4 = new Test(sphereModel4, new Vector3f(-5.23f,-6.5f,5.23f), new Vector3f(0,0,0), 0.1f);
 		entities.add(spherEntity4);
 		
 		this.spherEntity1 = spherEntity1;
@@ -146,7 +148,10 @@ public class TestGame implements ILogic{
 		this.spherEntity3 = spherEntity3;
 		this.spherEntity4 = spherEntity4;
 		
-		//physEngine.addObject(platform.getHitpoints().get(0));
+		physEngine.addObject(spherEntity1);
+		physEngine.addObject(spherEntity2);
+		physEngine.addObject(spherEntity3);
+		physEngine.addObject(spherEntity4);
 	
 		centerEntity.setV(new Vector3f(0,0,0));
 		centerEntity.setW(new Vector3f(0,0,0));
@@ -262,11 +267,9 @@ public class TestGame implements ILogic{
 	}
 	@Override
 	public void update(float interval, MouseInput mouseInput) {
-		//System.out.println(centerEntity.getDir1());
 		thrust();
-		//System.out.println(centerEntity.getAlpha());
-		
 		centerEntity.transformation();
+		physEngine.simulate(interval);
 		
 		setPosSpheres();
 		camera.movePosition(

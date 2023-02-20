@@ -28,7 +28,6 @@ public abstract class Entity {
 		this.scale = scale;
 		this.alpha = new Vector3f(0,0,0);
 		this.a = new Vector3f(0,0,0);
-		this.alphaA = new Vector3f(0,0,0);
 	}
 	abstract public ArrayList<PhysicsObject> getHitpoints();
 	
@@ -49,6 +48,9 @@ public abstract class Entity {
 		pos.add(toAdd1);
 		
 		rotation.add(w);
+		rotation.x %= 360;
+		rotation.y %= 360;
+		rotation.z %= 360;
 		
 		transform(getRotation());
 	}

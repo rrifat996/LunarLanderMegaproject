@@ -61,30 +61,30 @@ public class Test extends Entity{
 				thrustingDir = new Vector3f(dir1);
 				thrustingDir.add(dir3);
 				thrustingDir.mul(-1);
-				total2.add(thrustingDir.normalize(1));
+				total2.add(thrustingDir.normalize(0.05f));
 				System.out.println(thrustingDir);}
 			else if(controlList.get(i) % 6 == 1) {
 				thrustingDir = new Vector3f(dir1);
 				thrustingDir.add(dir3);
-				total2.add(thrustingDir.normalize(1));}
+				total2.add(thrustingDir.normalize(0.05f));}
 			else if(controlList.get(i) % 6 == 2) {
 				thrustingDir = new Vector3f(dir2);
 				thrustingDir.sub(dir3);
-				total2.add(thrustingDir.normalize(1));}
+				total2.add(thrustingDir.normalize(0.05f));}
 			else if(controlList.get(i) % 6 == 3) {
 				thrustingDir = new Vector3f(dir2);
 				thrustingDir.sub(dir3);
 				thrustingDir.mul(-1);
-				total2.add(thrustingDir.normalize(1));}
+				total2.add(thrustingDir.normalize(0.05f));}
 			else if(controlList.get(i) % 6 == 4) {
 				thrustingDir = new Vector3f(dir2);
 				thrustingDir.sub(dir1);
-				total2.add(thrustingDir.normalize(1));}
+				total2.add(thrustingDir.normalize(0.05f));}
 			else if(controlList.get(i) % 6 == 5) {
 				thrustingDir = new Vector3f(dir2);
 				thrustingDir.sub(dir1);
 				thrustingDir.mul(-1);
-				total2.add(thrustingDir.normalize(1));}
+				total2.add(thrustingDir.normalize(0.05f));}
 			// rotations
 			Vector3f thrustPtr = new Vector3f(0,0,0);
 			
@@ -99,7 +99,7 @@ public class Test extends Entity{
 			total.add(thrustPtr);
 		}
 		calculatedAlpha = total;
-		//calculatedA = total2;
+		calculatedA = total2;
 	}
 	public void transform(Vector3f totalRotation) {
 		addForDirection(dir1, 5.23f,-6.5f,5.23f, totalRotation);	
