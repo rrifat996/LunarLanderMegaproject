@@ -128,7 +128,7 @@ public class TestGame implements ILogic{
 		Entity platform = new Platform(planeModel, new Vector3f(0,-75,0), new Vector3f(0,0,0), -5,50);
 		entities.add(platform);
 		
-		Entity center = new Test(landerModel, new Vector3f(0,0,0), new Vector3f(30,0,30), 1);
+		Entity center = new Test(landerModel, new Vector3f(0,0,0), new Vector3f(20,0,0), 1);
 		entities.add(center);
 		this.centerEntity = center;
 		
@@ -148,13 +148,13 @@ public class TestGame implements ILogic{
 		this.spherEntity3 = spherEntity3;
 		this.spherEntity4 = spherEntity4;
 		
-		physEngine.addObject(spherEntity1);
-		physEngine.addObject(spherEntity2);
-		physEngine.addObject(spherEntity3);
+		//physEngine.addObject(spherEntity1);
+		//physEngine.addObject(spherEntity2);
+		//physEngine.addObject(spherEntity3);
 		physEngine.addObject(spherEntity4);
 	
 		centerEntity.setV(new Vector3f(0,0,0));
-		centerEntity.setW(new Vector3f(0,0,0));
+		centerEntity.setW(new Vector3f(1,1,0));
 		
 	}
 
