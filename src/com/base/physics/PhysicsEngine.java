@@ -28,15 +28,13 @@ public class PhysicsEngine {
 
 	}
 	public void simulate(float delta) {
-		//centerEntity.getV().y += G;
+		centerEntity.getV().y += G * 12;
 		
 		boolean waitNext = false;
 		
 		for(Entity object : mObjects) {
-			if(object.getPos().y < -12 && !waitNext) {
+			if(object.getPos().y < -12 && object.getPos().y > -13 &&!waitNext) {
 				waitNext = true;
-				System.out.println("collision!");
-				System.out.println(centerEntity.getPos());
 				float objectX = object.getPos().x;
 				float objectZ = object.getPos().z;
 				float entityX = centerEntity.getPos().x;
@@ -44,7 +42,6 @@ public class PhysicsEngine {
 				
 				float len = (float) Math.sqrt((objectX - entityX) * (objectX - entityX) + 
 						(objectZ - entityZ) * (objectZ - entityZ));
-				System.out.println("len :" +  len);
 				float viLen = Math.abs(centerEntity.getV().y);
 				Vector3f anan = new Vector3f(objectX - entityX, 0, objectZ - entityZ);
 				Vector3f baban = new Vector3f(0,1,0);
@@ -57,7 +54,7 @@ public class PhysicsEngine {
 
 				float wiRev = 1;
 				float viRev = 1;
-				if (baban.dot(canan) > 0) 
+				if (baban.dot(canan) < 0) 
 					wiRev = -1;
 				if(centerEntity.getV().y < 0)
 					viRev = -1;
@@ -79,31 +76,12 @@ public class PhysicsEngine {
 				baban.normalize(Math.abs(wfLen));
 				if(wfLen < 0)
 					baban.mul(-1);
+				baban.mul((12/10.0f));
 				centerEntity.getW().add(baban);
-				centerEntity.getV().y = vfLen;
+				centerEntity.getV().y = vfLen * (5/10.0f);
 				
-				centerEntity.getPos().y += 1;
+				centerEntity.getPos().y += 0.2;
 				
-				System.out.println("V: " + centerEntity.getV());
-				System.out.println("W: " + centerEntity.getW().x + "," + centerEntity.getW().z);
-				
-				System.out.println(counter);
-
-				
-				centerEntity.getPos().x = 0;
-				centerEntity.getPos().y = 0;
-				centerEntity.getPos().z = 0;
-				
-				centerEntity.getRotation().x = 20;
-				centerEntity.getRotation().y = counter;
-				centerEntity.getRotation().z = 0;
-				
-				counter += 20;
-				
-				centerEntity.setV(new Vector3f(0,0,0));
-				centerEntity.setW(new Vector3f(0,0,0));
-				
-
 			}
 			    
 		}

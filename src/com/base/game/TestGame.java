@@ -6,6 +6,7 @@ import java.util.Random;import javax.swing.LayoutStyle.ComponentPlacement;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.sampling.BestCandidateSampling.Cube;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.vulkan.AMDTextureGatherBiasLod;
@@ -36,6 +37,7 @@ public class TestGame implements ILogic{
 	private final ObjectLoader loader;
 	private final WindowManager window;
 	private final PhysicsEngine physEngine;
+	Model landModel;
 	
 	private Entity centerEntity ;
 
@@ -98,6 +100,7 @@ public class TestGame implements ILogic{
 		
 		Model planeModel = loader.loadOBJModel("./src/models/cube.txt");
 		planeModel.setTexture(new Texture(loader.loadTexture("./textures/grid2.jpg")));
+		this.landModel = planeModel;
 		
 		Model landerModel = loader.loadOBJModel("./src/models/lolo2.obj");
 		landerModel.setTexture(new Texture(loader.loadTexture("./textures/gray.jpg")));
@@ -128,7 +131,7 @@ public class TestGame implements ILogic{
 		Entity platform = new Platform(planeModel, new Vector3f(0,-75,0), new Vector3f(0,0,0), -5,50);
 		entities.add(platform);
 		
-		Entity center = new Test(landerModel, new Vector3f(0,0,0), new Vector3f(20,0,0), 1);
+		Entity center = new Test(landerModel, new Vector3f(0,0,0), new Vector3f(20,20,0), 1);
 		entities.add(center);
 		this.centerEntity = center;
 		
@@ -148,13 +151,13 @@ public class TestGame implements ILogic{
 		this.spherEntity3 = spherEntity3;
 		this.spherEntity4 = spherEntity4;
 		
-		//physEngine.addObject(spherEntity1);
-		//physEngine.addObject(spherEntity2);
-		//physEngine.addObject(spherEntity3);
+		physEngine.addObject(spherEntity1);
+		physEngine.addObject(spherEntity2);
+		physEngine.addObject(spherEntity3);
 		physEngine.addObject(spherEntity4);
 	
 		centerEntity.setV(new Vector3f(0,0,0));
-		centerEntity.setW(new Vector3f(1,1,0));
+		centerEntity.setW(new Vector3f(0,0,0.05f));
 		
 	}
 
@@ -270,8 +273,19 @@ public class TestGame implements ILogic{
 		thrust();
 		centerEntity.transformation();
 		physEngine.simulate(interval);
-		
 		setPosSpheres();
+		
+		if(spherEntity1.getPos().y < -10 &&
+			spherEntity2.getPos().y < -10 &&
+			spherEntity3.getPos().y < -10 &&
+			spherEntity4.getPos().y < -10) {
+			System.out.println("heereree");
+			try {
+				landModel.setTexture(new Texture(loader.loadTexture("./textures/blue.jpg")));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		camera.movePosition(
 				cameraInc.x * CAMERA_MOVEMENT_SPEED, 
 				cameraInc.y * CAMERA_MOVEMENT_SPEED,

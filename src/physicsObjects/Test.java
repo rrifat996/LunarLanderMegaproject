@@ -57,46 +57,41 @@ public class Test extends Entity{
 		for(int i = 0; i < controlList.size(); i++) {
 			Vector3f thrustingDir = new Vector3f(0,0,0);
 			
-			if(controlList.get(i) % 6 == 0) {
+			if(controlList.get(i) / 6 == 0) {
 				thrustingDir = new Vector3f(dir1);
 				thrustingDir.add(dir3);
 				thrustingDir.mul(-1);
-				total2.add(thrustingDir.normalize(0.05f));
-				System.out.println(thrustingDir);}
-			else if(controlList.get(i) % 6 == 1) {
+				total2.add(thrustingDir.normalize(0.05f));}
+			else if(controlList.get(i) / 6 == 1) {
 				thrustingDir = new Vector3f(dir1);
 				thrustingDir.add(dir3);
 				total2.add(thrustingDir.normalize(0.05f));}
-			else if(controlList.get(i) % 6 == 2) {
+			else if(controlList.get(i) / 6 == 2) {
 				thrustingDir = new Vector3f(dir2);
 				thrustingDir.sub(dir3);
 				total2.add(thrustingDir.normalize(0.05f));}
-			else if(controlList.get(i) % 6 == 3) {
+			else if(controlList.get(i) / 6 == 3) {
 				thrustingDir = new Vector3f(dir2);
 				thrustingDir.sub(dir3);
 				thrustingDir.mul(-1);
 				total2.add(thrustingDir.normalize(0.05f));}
-			else if(controlList.get(i) % 6 == 4) {
+			else if(controlList.get(i) / 6 == 4) {
 				thrustingDir = new Vector3f(dir2);
 				thrustingDir.sub(dir1);
 				total2.add(thrustingDir.normalize(0.05f));}
-			else if(controlList.get(i) % 6 == 5) {
+			else if(controlList.get(i) / 6 == 5) {
 				thrustingDir = new Vector3f(dir2);
 				thrustingDir.sub(dir1);
 				thrustingDir.mul(-1);
 				total2.add(thrustingDir.normalize(0.05f));}
 			// rotations
-			Vector3f thrustPtr = new Vector3f(0,0,0);
-			
-			if(controlList.get(i) / 6 == 0)		thrustPtr = new Vector3f(thrust1);
-			else if(controlList.get(i) / 6 == 1)thrustPtr = new Vector3f(thrust2);
-			else if(controlList.get(i) / 6 == 2)thrustPtr = new Vector3f(thrust3);
-			else if(controlList.get(i) / 6 == 3)thrustPtr = new Vector3f(thrust4);
-		
-			
-			thrustPtr.cross(thrustingDir).normalize(0.05f); // random val
+			if     (controlList.get(i) % 6 == 0) total.y += 0.1f;
+			else if(controlList.get(i) % 6 == 1) total.y -= 0.1f;
+			else if(controlList.get(i) % 6 == 2) total.x += 0.1f;
+			else if(controlList.get(i) % 6 == 3) total.x -= 0.1f;
+			else if(controlList.get(i) % 6 == 4) total.z += 0.1f;
+			else 								 total.z -= 0.1f;
 
-			total.add(thrustPtr);
 		}
 		calculatedAlpha = total;
 		calculatedA = total2;
