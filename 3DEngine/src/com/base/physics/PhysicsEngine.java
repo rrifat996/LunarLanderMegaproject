@@ -76,7 +76,7 @@ public class PhysicsEngine {
 				baban.normalize(Math.abs(wfLen));
 				if(wfLen < 0)
 					baban.mul(-1);
-				baban.mul((12/10.0f));
+				baban.mul((15/10.0f));
 				centerEntity.getW().add(baban);
 				centerEntity.getV().y = vfLen * (5/10.0f);
 				

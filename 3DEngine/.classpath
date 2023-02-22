@@ -179,5 +179,6 @@
 	<classpathentry kind="lib" path="C:/Users/HP/Desktop/lib/steamworks4j-server-1.9.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/HP/Desktop/lib/steamworks4j-server-1.9.0-javadoc.jar"/>
 	<classpathentry kind="lib" path="C:/Users/HP/Desktop/lib/steamworks4j-server-1.9.0-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/HP/Desktop/py4j0.10.9.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
