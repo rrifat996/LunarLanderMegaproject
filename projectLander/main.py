@@ -1,4 +1,6 @@
 from py4j.java_gateway import JavaGateway
+from tensorflow.keras.layers import Dense, Input
+from tensorflow.keras.optimizers import Adam
 
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script..
