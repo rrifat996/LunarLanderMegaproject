@@ -42,6 +42,8 @@ public class TestGame implements ILogic{
 
 	private int updateCounter = 0;
 	
+	private float prevDist = 1000;
+	
 	int counter =0 ;
 	
 	private List<Entity> entities;
@@ -160,7 +162,7 @@ public class TestGame implements ILogic{
 		
 	}
 
-	public ArrayList<Float> getInfo() {
+	public ArrayList<Float> getInfo(boolean engineFired) {
 		ArrayList<Float> list = new ArrayList<>(16);
 		list.set(0, centerEntity.getPos().x);
 		list.set(1, centerEntity.getPos().y);
@@ -178,8 +180,50 @@ public class TestGame implements ILogic{
 		list.set(13, spherEntity2.getPos().y < -10 ? 1.0f : 0.0f);
 		list.set(14, spherEntity3.getPos().y < -10 ? 1.0f : 0.0f);
 		list.set(15, spherEntity4.getPos().y < -10 ? 1.0f : 0.0f);
+		list.set(16, calculateReward(engineFired));
+		list.set(17, isDone());
 		
 		return list;
+	}
+	public float calculateReward(boolean engineFired) {
+		float reward = 0;
+		if(isDone() > 0.5 && spherEntity1.getPos().length() < 15
+				&& spherEntity2.getPos().length() < 15
+				&& spherEntity3.getPos().length() < 15
+				&& spherEntity4.getPos().length() < 15)
+			reward += 100;
+		if(Math.abs(centerEntity.getPos().x) >= 50 || 
+				Math.abs(centerEntity.getPos().y) >= 50 ||
+				Math.abs(centerEntity.getPos().z) >= 50) 
+			reward -= 100;
+		if(Math.abs(centerEntity.getRotation().x) >= 40 || 
+				Math.abs(centerEntity.getRotation().y) >= 40 ||
+				Math.abs(centerEntity.getRotation().z) >= 40) 
+			reward -= 100;
+		if(centerEntity.getRotation().length() > prevDist) {
+			reward -= 5;
+			prevDist = centerEntity.getRotation().length();
+		}
+		if(spherEntity1.getPos().y < -10 && spherEntity1.getPos().length() < 15) 
+			reward += 15;
+		if(spherEntity2.getPos().y < -10 && spherEntity2.getPos().length() < 15) 
+			reward += 15;
+		if(spherEntity3.getPos().y < -10 && spherEntity3.getPos().length() < 15) 
+			reward += 15;
+		if(spherEntity4.getPos().y < -10 && spherEntity4.getPos().length() < 15) 
+			reward += 15;
+		if(engineFired)
+			reward -= -0.03f;
+		return reward;
+	}
+	public float isDone() {
+		if(spherEntity1.getPos().y < -10 &&
+				spherEntity2.getPos().y < -10 &&
+				spherEntity3.getPos().y < -10 &&
+				spherEntity4.getPos().y < -10) {
+				return 1.0f;
+			}
+		else return 0;
 	}
 
 	public void reset() {

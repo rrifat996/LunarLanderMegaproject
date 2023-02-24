@@ -50,7 +50,7 @@ public class Main {
 	}
 	public ArrayList<Float> step(int thrust) {
 		engine.step();
-		ArrayList<Float> info = game.getInfo();
+		ArrayList<Float> info = game.getInfo(thrust < 36);
 		return info;
 	}
 	
