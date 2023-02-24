@@ -1,13 +1,10 @@
-from collections import namedtuple
-
+import utils
+import time
 import numpy as np
 import tensorflow as tf
 from py4j.java_gateway import JavaGateway
-from tensorflow.python.keras.layers import Dense, Input
 from tensorflow.python.keras.losses import MSE
-import utils
-import time
-from pyvirtualdisplay import Display
+from collections import namedtuple, deque
 from keras import Sequential
 from keras.layers import Dense, Input
 from keras.losses import MSE
@@ -17,17 +14,11 @@ from keras.optimizers import Adam
 q_network = None
 target_q_network = None
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script..
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
-    gateway = JavaGateway()
-    main = gateway.entry_point
-    print(main.testMethod())
-    print(main.getNumber())
+    print('PyCharm')
+
 
 
 MEMORY_SIZE = 100_000     # size of memory buffer.
@@ -35,14 +26,18 @@ GAMMA = 0.995             # discount factor.
 ALPHA = 1e-3              # learning rate.
 NUM_STEPS_FOR_UPDATE = 4  # perform a learning update every C time steps.
 
-state_size = env.observation_space.shape # 13
-num_actions = env.action_space.n  # 17 + 1nothing
-# UNQ_C1
-# GRADED CELL
+#position3 rotation3 v3 w3 contact4
+state_size = 16;
+num_actions = 17 + 1;
+
 @TODO
-# dont forget to modify engine manager
+# dont forget to modify engine manager#
 @TODO
 # constructer call set environment
+gateway = JavaGateway()
+javaMain = gateway.entry_point
+print(javaMain.testMethod())
+
 @TODO
 # reset environment
 
@@ -112,8 +107,7 @@ def agent_learn(experiences, gamma):
     optimizer.apply_gradients(zip(gradients, q_network.trainable_variables))
 
     # update the weights of target q_network.
-    utils.
-    (q_network, target_q_network)
+    utils.update_target_network(q_network, target_q_network)
 
 
 start = time.time()
@@ -158,7 +152,6 @@ for i in range(num_episodes):
         if update:
             # Sample random mini-batch of experience tuples (S,A,R,S') from D.
             experiences = utils.get_experiences(memory_buffer)
-
             # Set the y targets, perform a gradient descent step,
             # and update the network weights.
             agent_learn(experiences, GAMMA)

@@ -22,6 +22,8 @@ public class EngineManager {
 	private GLFWErrorCallback errorCallback;
 	private float interval  = 0.01f ; //delta
 	
+	private int step = 10;
+	
 	private void init() throws Exception {
 		GLFW.glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
 		window = Main.getWindow();
@@ -92,7 +94,10 @@ public class EngineManager {
 		window.update();	
 	}
 	private void update(float interval) {
-		gameLogic.update(interval, mouseInput);
+		if(step > 0) {
+			gameLogic.update(interval, mouseInput);
+			step--;
+		}
 	}
 	private void cleanUp() {
 		window.cleanUp();
@@ -107,6 +112,10 @@ public class EngineManager {
 	}
 	public static void setFps(int fps) {
 		EngineManager.fps = fps;
+	}
+	public void step() {
+		this.step = 100;
+		
 	}
 	
 }

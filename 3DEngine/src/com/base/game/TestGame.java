@@ -25,7 +25,6 @@ import com.base.engine.utils.Consts;
 import com.base.physics.PhysicsEngine;
 import com.base.physics.PhysicsObject;
 
-import physicsObjects.LunarLander;
 import physicsObjects.Platform;
 import physicsObjects.Star;
 import physicsObjects.Test;
@@ -131,7 +130,7 @@ public class TestGame implements ILogic{
 		Entity platform = new Platform(planeModel, new Vector3f(0,-75,0), new Vector3f(0,0,0), -5,50);
 		entities.add(platform);
 		
-		Entity center = new Test(landerModel, new Vector3f(0,0,0), new Vector3f(20,20,0), 1);
+		Entity center = new Test(landerModel, new Vector3f(0,0,0), new Vector3f(0,0,0), 1);
 		entities.add(center);
 		this.centerEntity = center;
 		
@@ -157,10 +156,20 @@ public class TestGame implements ILogic{
 		physEngine.addObject(spherEntity4);
 	
 		centerEntity.setV(new Vector3f(0,0,0));
-		centerEntity.setW(new Vector3f(0,0,0.05f));
+		centerEntity.setW(new Vector3f(0,0,0));
 		
 	}
 
+
+	public void reset() {
+		centerEntity.setPos(0,0,0);
+		centerEntity.setRotation(0,0,0);
+		centerEntity.setV(0,0,0);
+		centerEntity.setW(0,0,0);
+		centerEntity.setAlpha(0,0,0);
+		centerEntity.setA(0,0,0);
+	}
+	
 	@Override
 	public void input() {
 		cameraInc.set(0,0,0);
@@ -279,7 +288,6 @@ public class TestGame implements ILogic{
 			spherEntity2.getPos().y < -10 &&
 			spherEntity3.getPos().y < -10 &&
 			spherEntity4.getPos().y < -10) {
-			System.out.println("heereree");
 			try {
 				landModel.setTexture(new Texture(loader.loadTexture("./textures/blue.jpg")));
 			} catch (Exception e) {
@@ -320,5 +328,5 @@ public class TestGame implements ILogic{
 		renderer.cleanUp();
 		loader.cleanup();
 	}
-	
+
 }

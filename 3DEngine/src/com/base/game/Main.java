@@ -1,6 +1,14 @@
 package com.base.game;
 
 import py4j.GatewayServer;
+
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import org.lwjgl.vulkan.EXTHostQueryReset;
+import org.lwjgl.vulkan.VkDescriptorPoolInlineUniformBlockCreateInfo;
+
 import com.base.engine.EngineManager;
 import com.base.engine.WindowManager;
 import com.base.engine.utils.Consts;
@@ -20,8 +28,9 @@ public class Main {
 	}
 	public static void main(String[] args) {
 		Main main = new Main();
-		GatewayServer server = new GatewayServer(main);
-		server.start();
+		
+		//GatewayServer server = new GatewayServer(main);
+		//server.start();
 		
 		window = new WindowManager(Consts.TITLE, 1600, 900, false);
 		game = new TestGame();
@@ -34,6 +43,14 @@ public class Main {
 			e.printStackTrace();
 		}
 		
+	}
+	public static void reset() {		    	
+		game.reset();
+	}
+	public ArrayList<Float> step(int thrust) {
+		engine.step();
+		ArrayList<Float> info = game.getInfo();
+		return info;
 	}
 	
 	

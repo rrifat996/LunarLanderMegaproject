@@ -68,5 +68,11 @@ public class Star extends Entity{
 		return null;
 	}
 
+	@Override
+	public Vector3f getCalculatedA() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 }

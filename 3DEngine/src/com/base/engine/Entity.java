@@ -10,11 +10,6 @@ import com.base.engine.entity.Model;
 import com.base.physics.PhysicsObject;
 
 public abstract class Entity {
-	public static final Vector3f xAxis = new Vector3f(-1,0,0);
-	public static final Vector3f yAxis = new Vector3f(0,-1,0);
-	public static final Vector3f zAxis = new Vector3f(0,0,-1);
-	
-	private static final float F = 0.0001f;
 	private static final float delta = 0.05f;
 	private Model model;
 	private Vector3f pos, rotation;
@@ -135,5 +130,15 @@ public abstract class Entity {
 		this.w.x = x;
 		this.w.y = y;
 		this.w.z = z;
+	}
+	public void setV(float x, float y, float z) {
+		this.v.x = x;
+		this.v.y = y;
+		this.v.z = z;
+	}
+	public void setPos(float x, float y, float z) {
+		this.pos.x = x;
+		this.pos.y = y;
+		this.pos.z = z;
 	}
 }
