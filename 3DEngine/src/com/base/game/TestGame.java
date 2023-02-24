@@ -160,6 +160,27 @@ public class TestGame implements ILogic{
 		
 	}
 
+	public ArrayList<Float> getInfo() {
+		ArrayList<Float> list = new ArrayList<>(16);
+		list.set(0, centerEntity.getPos().x);
+		list.set(1, centerEntity.getPos().y);
+		list.set(2, centerEntity.getPos().z);
+		list.set(3, centerEntity.getRotation().x);
+		list.set(4, centerEntity.getRotation().y);
+		list.set(5, centerEntity.getRotation().z);
+		list.set(6, centerEntity.getV().x);
+		list.set(7, centerEntity.getV().y);
+		list.set(8, centerEntity.getV().z);
+		list.set(9, centerEntity.getW().x);
+		list.set(10, centerEntity.getW().y);
+		list.set(11, centerEntity.getW().z);
+		list.set(12, spherEntity1.getPos().y < -10 ? 1.0f : 0.0f);
+		list.set(13, spherEntity2.getPos().y < -10 ? 1.0f : 0.0f);
+		list.set(14, spherEntity3.getPos().y < -10 ? 1.0f : 0.0f);
+		list.set(15, spherEntity4.getPos().y < -10 ? 1.0f : 0.0f);
+		
+		return list;
+	}
 
 	public void reset() {
 		centerEntity.setPos(0,0,0);
@@ -309,9 +330,7 @@ public class TestGame implements ILogic{
 		
 		for(Entity entity: entities)	renderer.processEntities(entity);
 	}
-
 	
-
 	@Override
 	public void render() {
 		if(window.isResize()) {
@@ -328,5 +347,7 @@ public class TestGame implements ILogic{
 		renderer.cleanUp();
 		loader.cleanup();
 	}
+
+
 
 }

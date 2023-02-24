@@ -18,6 +18,7 @@ public class Main {
 	private static WindowManager window;
 	private static TestGame game;
 	private static int number;
+	private static EngineManager engine;
 	
 	public static int testMethod() {
 		number = 7;
@@ -29,12 +30,12 @@ public class Main {
 	public static void main(String[] args) {
 		Main main = new Main();
 		
-		//GatewayServer server = new GatewayServer(main);
-		//server.start();
+		GatewayServer server = new GatewayServer(main);
+		server.start();
 		
 		window = new WindowManager(Consts.TITLE, 1600, 900, false);
 		game = new TestGame();
-		EngineManager engine  = new EngineManager();
+		engine  = new EngineManager();
 		
 		try {
 			engine.start();

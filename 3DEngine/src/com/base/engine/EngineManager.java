@@ -22,7 +22,7 @@ public class EngineManager {
 	private GLFWErrorCallback errorCallback;
 	private float interval  = 0.01f ; //delta
 	
-	private int step = 10;
+	private int step = 0;
 	
 	private void init() throws Exception {
 		GLFW.glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
@@ -114,7 +114,7 @@ public class EngineManager {
 		EngineManager.fps = fps;
 	}
 	public void step() {
-		this.step = 100;
+		this.step = 10;
 		
 	}
 	
