@@ -1,7 +1,7 @@
 # LunarLanderMegaproject
 +3 month long Simulation project which lands lunar lander with 17 thrusters and 4 hitboxes from specific coordinates to the origin of the world.   
 First run test engine before python script.   
-To run enigne without step logic (made for deeplearning algorithm) set step attrb = 1 and remove step-- from EngineManager. Otherwise you will see black screen meaning   engine waits for step() call.   
+To run engine without step logic (made for the learning algorithm) set step attrb = 1 and remove step-- from EngineManager. Otherwise you will see black screen meaning   engine waits for step() call.   
 For manual thrusting controls which are IMPOSSIBLE to land with can be learned from TestGame class.   
 There are 36 input combinations some which are not defined in the learning algorithm.  
 For manual control you MUST check Test class vector summing thrusting method AND check position vectors of thrusters relative to centerEntity for you to know which   thruster you will ignite.  
