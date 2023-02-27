@@ -18,7 +18,7 @@ public class EngineManager {
 	private ILogic gameLogic;
 	
 	private WindowManager window;
-	private MouseInput mouseInput; 
+	private MouseInput mouseInput;
 	private GLFWErrorCallback errorCallback;
 	private float interval  = 0.01f ; //delta
 	

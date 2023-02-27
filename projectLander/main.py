@@ -9,6 +9,8 @@ from keras import Sequential
 from keras.layers import Dense, Input
 from keras.losses import MSE
 from keras.optimizers import Adam
+import utils
+import random
 
 
 q_network = None
@@ -44,10 +46,10 @@ action = 0
 # single time step may be 5 10 multiple idk
 javaMain.step(action)
 time.sleep(1 / 6)
-list = javaMain.getLatestInfo()
-next_state = list[0 : 16]
-reward = list[16]
-done = list[17]
+listInfo = javaMain.getLatestInfo()
+next_state = listInfo[0 : 16]
+reward = listInfo[16]
+done = listInfo[17]
 
 # utils.display_table(initial_state, action, next_state, reward, done)
 
@@ -144,12 +146,13 @@ for i in range(num_episodes):
         q_values = q_network(state_qn)
         action = utils.get_action(q_values, epsilon)
 
+
         # Take action A and receive reward R and the next state S'.
 
         javaMain.step(action)
         time.sleep(1 / 6)
         list2 = javaMain.getLatestInfo()
-        next_state = list2[0: 16]
+        next_state = list(list2[0: 16])
         reward = list2[16]
         done = list2[17]
 
