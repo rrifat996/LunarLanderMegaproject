@@ -122,7 +122,8 @@ def get_new_eps(epsilon):
 
     return max(E_MIN, E_DECAY * epsilon)
 
-
+def argmax(lst):
+  return lst.index(max(lst))
 def get_action(q_values, epsilon=0.0):
     """
     Returns an action using an ε-greedy policy.
@@ -146,7 +147,8 @@ def get_action(q_values, epsilon=0.0):
     """
 
     if random.random() > epsilon:
-        return np.argmax(q_values.numpy()[0])
+        l = argmax(tf.Variable(q_values).numpy().tolist())
+        return l
     else:
         list1 = [0,1,2,3,4,5,6,7,8,9,10]
         number = random.choice(list1)

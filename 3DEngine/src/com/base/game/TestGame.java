@@ -57,6 +57,8 @@ public class TestGame implements ILogic{
 	private Entity spherEntity3;
 	private Entity spherEntity4;
 	
+	private Main main;
+	
 	private boolean engine0Requested = false;
 	private boolean engine1Requested = false;
 	private boolean engine2Requested = false;
@@ -223,6 +225,15 @@ public class TestGame implements ILogic{
 				spherEntity4.getPos().y < 1) {
 				return 1.0f;
 			}
+		if(Math.abs(centerEntity.getPos().x) >= 50 || 
+				Math.abs(centerEntity.getPos().y) >= 50 ||
+				Math.abs(centerEntity.getPos().z) >= 50) 
+			return 1.0f;
+		if(Math.abs(centerEntity.getRotation().x) >= 40 || 
+				Math.abs(centerEntity.getRotation().y) >= 40 ||
+				Math.abs(centerEntity.getRotation().z) >= 40) 
+			return 1.0f;
+		
 		else return 0;
 	}
 
@@ -321,6 +332,7 @@ public class TestGame implements ILogic{
 		if(engineJRequested) {	controlList.add(21);engineJRequested = false;}
 		if(engineKRequested) {	controlList.add(22);engineKRequested = false;}
 		if(engineLRequested) {	controlList.add(23);engineLRequested = false;}
+		controlList.add(Main.getLatestThrust());
 		
 		if(controlList.size() == 0) {
 			centerEntity.setA(0,0,0);

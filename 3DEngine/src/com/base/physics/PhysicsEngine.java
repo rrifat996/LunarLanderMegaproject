@@ -79,6 +79,10 @@ public class PhysicsEngine {
 				
 				centerEntity.getPos().y += 0.2;
 				
+				if (centerEntity.getV().length() > 5)
+					centerEntity.setV(2,2,2);
+				if (centerEntity.getW().length() > 10)
+					centerEntity.setW(3,3,3);
 			}
 			    
 		}

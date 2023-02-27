@@ -152,6 +152,7 @@ for i in range(num_episodes):
         javaMain.step(action)
         time.sleep(1 / 6)
         list2 = javaMain.getLatestInfo()
+        print(list2)
         next_state = list(list2[0: 16])
         reward = list2[16]
         done = list2[17]
@@ -175,7 +176,7 @@ for i in range(num_episodes):
         state = next_state.copy()
         total_points += reward
 
-        if done:
+        if done > 0.5:
             break
 
     total_point_history.append(total_points)
@@ -191,7 +192,7 @@ for i in range(num_episodes):
 
     # We will consider that the environment is solved if we get an
     # average of 200 points in the last 100 episodes.
-    if av_latest_points >= 200.0:
+    if av_latest_points >= 1000.0:
         print(f"\n\nEnvironment solved in {i + 1} episodes!")
         q_network.save('lunar_lander_model.h5')
         break

@@ -14,7 +14,7 @@ public class Main {
 	private static int number;
 	private static EngineManager engine;
 	private static List<Float> latestInfo;
-	private static int latestThrust;
+	private static int latestThrust = 0;
 	
 	public static void main(String[] args) throws InterruptedException {
 		Main main = new Main();

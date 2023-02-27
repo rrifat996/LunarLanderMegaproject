@@ -78,11 +78,11 @@ public class Test extends Entity{
 			else if(controlList.get(i) / 6 == 4) {
 				thrustingDir = new Vector3f(dir2);
 				thrustingDir.sub(dir1);
+				thrustingDir.mul(-1);
 				total2.add(thrustingDir.normalize(0.05f));}
 			else if(controlList.get(i) / 6 == 5) {
 				thrustingDir = new Vector3f(dir2);
 				thrustingDir.sub(dir1);
-				thrustingDir.mul(-1);
 				total2.add(thrustingDir.normalize(0.05f));}
 			// rotations
 			if     (controlList.get(i) % 6 == 0) total.y += 0.1f;
