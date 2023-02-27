@@ -1,4 +1,4 @@
-# LunarLanderMegaproject
+# LunarLanderMegaproject 💀 🌚
 +3 month long Simulation project which lands lunar lander with 17 thrusters and 4 hitboxes from specific coordinates to the origin of the world.   
 First run test engine before python script.   
 To run engine without step logic (made for the learning algorithm) set step attrb = 1 and remove step-- from EngineManager. Otherwise you will see black screen meaning   engine waits for step() call.   
