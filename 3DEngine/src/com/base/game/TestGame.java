@@ -1,6 +1,7 @@
 package com.base.game;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;import javax.swing.LayoutStyle.ComponentPlacement;
 
@@ -129,22 +130,22 @@ public class TestGame implements ILogic{
 				entities.add(star); 
 			}
 		}
-		Entity platform = new Platform(planeModel, new Vector3f(0,-75,0), new Vector3f(0,0,0), -5,50);
+		Entity platform = new Platform(planeModel, new Vector3f(0,-50,0), new Vector3f(0,0,0), -5,50);
 		entities.add(platform);
 		
-		Entity center = new Test(landerModel, new Vector3f(0,0,0), new Vector3f(0,0,0), 1);
+		Entity center = new Test(landerModel, new Vector3f(20,40,20), new Vector3f(0,0,0), 1);
 		entities.add(center);
 		this.centerEntity = center;
 		
 		physEngine.setCenter(centerEntity);
 		
-		Entity spherEntity1 = new Test(sphereModel1, new Vector3f(5.23f,-6.5f,5.23f), new Vector3f(0,0,0), 0.1f);
+		Entity spherEntity1 = new Test(sphereModel1, new Vector3f(25.23f,33.5f,25.23f), new Vector3f(0,0,0), 0.1f);
 		entities.add(spherEntity1);
-		Entity spherEntity2 = new Test(sphereModel2, new Vector3f(5.23f,-6.5f,-5.23f), new Vector3f(0,0,0), 0.1f);
+		Entity spherEntity2 = new Test(sphereModel2, new Vector3f(25.23f,33.5f,15.23f), new Vector3f(0,0,0), 0.1f);
 		entities.add(spherEntity2);
-		Entity spherEntity3 = new Test(sphereModel3, new Vector3f(-5.23f,-6.5f,-5.23f), new Vector3f(0,0,0), 0.1f);
+		Entity spherEntity3 = new Test(sphereModel3, new Vector3f(15.23f,33.5f,15.23f), new Vector3f(0,0,0), 0.1f);
 		entities.add(spherEntity3);
-		Entity spherEntity4 = new Test(sphereModel4, new Vector3f(-5.23f,-6.5f,5.23f), new Vector3f(0,0,0), 0.1f);
+		Entity spherEntity4 = new Test(sphereModel4, new Vector3f(15.23f,33.5f,25.23f), new Vector3f(0,0,0), 0.1f);
 		entities.add(spherEntity4);
 		
 		this.spherEntity1 = spherEntity1;
@@ -162,8 +163,8 @@ public class TestGame implements ILogic{
 		
 	}
 
-	public ArrayList<Float> getInfo(boolean engineFired) {
-		ArrayList<Float> list = new ArrayList<>(16);
+	public List<Float> getInfo(boolean engineFired) {
+		List<Float> list = Arrays.asList(new Float[18]);
 		list.set(0, centerEntity.getPos().x);
 		list.set(1, centerEntity.getPos().y);
 		list.set(2, centerEntity.getPos().z);
@@ -176,13 +177,12 @@ public class TestGame implements ILogic{
 		list.set(9, centerEntity.getW().x);
 		list.set(10, centerEntity.getW().y);
 		list.set(11, centerEntity.getW().z);
-		list.set(12, spherEntity1.getPos().y < -10 ? 1.0f : 0.0f);
-		list.set(13, spherEntity2.getPos().y < -10 ? 1.0f : 0.0f);
-		list.set(14, spherEntity3.getPos().y < -10 ? 1.0f : 0.0f);
-		list.set(15, spherEntity4.getPos().y < -10 ? 1.0f : 0.0f);
+		list.set(12, spherEntity1.getPos().y < 1 ? 1.0f : 0.0f);
+		list.set(13, spherEntity2.getPos().y < 1 ? 1.0f : 0.0f);
+		list.set(14, spherEntity3.getPos().y < 1 ? 1.0f : 0.0f);
+		list.set(15, spherEntity4.getPos().y < 1 ? 1.0f : 0.0f);
 		list.set(16, calculateReward(engineFired));
 		list.set(17, isDone());
-		
 		return list;
 	}
 	public float calculateReward(boolean engineFired) {
@@ -204,30 +204,30 @@ public class TestGame implements ILogic{
 			reward -= 5;
 			prevDist = centerEntity.getRotation().length();
 		}
-		if(spherEntity1.getPos().y < -10 && spherEntity1.getPos().length() < 15) 
+		if(spherEntity1.getPos().y < 1 && spherEntity1.getPos().length() < 15) 
 			reward += 15;
-		if(spherEntity2.getPos().y < -10 && spherEntity2.getPos().length() < 15) 
+		if(spherEntity2.getPos().y < 1 && spherEntity2.getPos().length() < 15) 
 			reward += 15;
-		if(spherEntity3.getPos().y < -10 && spherEntity3.getPos().length() < 15) 
+		if(spherEntity3.getPos().y < 1 && spherEntity3.getPos().length() < 15) 
 			reward += 15;
-		if(spherEntity4.getPos().y < -10 && spherEntity4.getPos().length() < 15) 
+		if(spherEntity4.getPos().y < 1 && spherEntity4.getPos().length() < 15) 
 			reward += 15;
 		if(engineFired)
-			reward -= -0.03f;
+			reward -= 0.03f;
 		return reward;
 	}
 	public float isDone() {
-		if(spherEntity1.getPos().y < -10 &&
-				spherEntity2.getPos().y < -10 &&
-				spherEntity3.getPos().y < -10 &&
-				spherEntity4.getPos().y < -10) {
+		if(spherEntity1.getPos().y < 1 &&
+				spherEntity2.getPos().y < 1 &&
+				spherEntity3.getPos().y < 1 &&
+				spherEntity4.getPos().y < 1) {
 				return 1.0f;
 			}
 		else return 0;
 	}
 
 	public void reset() {
-		centerEntity.setPos(0,0,0);
+		centerEntity.setPos(20,40,20);
 		centerEntity.setRotation(0,0,0);
 		centerEntity.setV(0,0,0);
 		centerEntity.setW(0,0,0);
@@ -297,21 +297,12 @@ public class TestGame implements ILogic{
 	}
 	public void thrust() {
 		ArrayList<Integer> controlList = new ArrayList<>();
-		if(engine0Requested) {
-			controlList.add(0);	engine0Requested = false;}
-		if(engine1Requested) {
-			controlList.add(1); 
-			engine1Requested = false;}
-		if(engine2Requested) {
-		controlList.add(2);
-		engine2Requested = false;}
-		if(engine3Requested) {
-		controlList.add(3); engine3Requested = false;}
-		if(engine4Requested) {
-		controlList.add(4);	engine4Requested = false;}
-		if(engine5Requested) {
-		
-		controlList.add(5); engine5Requested = false;}
+		if(engine0Requested) {  controlList.add(0);	engine0Requested = false;}
+		if(engine1Requested) {	controlList.add(1); engine1Requested = false;}
+		if(engine2Requested) {  controlList.add(2); engine2Requested = false;}
+		if(engine3Requested) {  controlList.add(3); engine3Requested = false;}
+		if(engine4Requested) {  controlList.add(4);	engine4Requested = false;}
+		if(engine5Requested) {  controlList.add(5); engine5Requested = false;}
 		if(engine6Requested) {	controlList.add(6); engine6Requested = false;}
 		if(engine7Requested) {	controlList.add(7);	engine7Requested = false;}
 		if(engine8Requested) {	controlList.add(8); engine8Requested = false;}
@@ -349,10 +340,10 @@ public class TestGame implements ILogic{
 		physEngine.simulate(interval);
 		setPosSpheres();
 		
-		if(spherEntity1.getPos().y < -10 &&
-			spherEntity2.getPos().y < -10 &&
-			spherEntity3.getPos().y < -10 &&
-			spherEntity4.getPos().y < -10) {
+		if(spherEntity1.getPos().y < 1 &&
+			spherEntity2.getPos().y < 1 &&
+			spherEntity3.getPos().y < 1 &&
+			spherEntity4.getPos().y < 1) {
 			try {
 				landModel.setTexture(new Texture(loader.loadTexture("./textures/blue.jpg")));
 			} catch (Exception e) {

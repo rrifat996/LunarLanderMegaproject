@@ -30,7 +30,7 @@ public class PhysicsEngine {
 		boolean waitNext = false;
 		
 		for(Entity object : mObjects) {
-			if(object.getPos().y < -12 && object.getPos().y > -13 &&!waitNext) {
+			if(object.getPos().y < 0 && object.getPos().y > -1 &&!waitNext) {
 				waitNext = true;
 				float objectX = object.getPos().x;
 				float objectZ = object.getPos().z;
@@ -82,12 +82,5 @@ public class PhysicsEngine {
 			}
 			    
 		}
-	}
-	public void handleCollisions() {
-		
-		
-		
-		
-		
 	}
 }

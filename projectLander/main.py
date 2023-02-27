@@ -30,34 +30,36 @@ NUM_STEPS_FOR_UPDATE = 4  # perform a learning update every C time steps.
 state_size = 16;
 num_actions = 17 + 1;
 
-@TODO
 # dont forget to modify engine manager#
-@TODO
+
 # constructer call set environment
 gateway = JavaGateway()
 javaMain = gateway.entry_point
-print(javaMain.testMethod())
 
-@TODO
 # reset environment
-
+javaMain.reset()
 # random initial action
 action = 0
 
 # single time step may be 5 10 multiple idk
-next_state, reward, done = env.step(action)
+javaMain.step(action)
+time.sleep(1 / 6)
+list = javaMain.getLatestInfo()
+next_state = list[0 : 16]
+reward = list[16]
+done = list[17]
 
 # utils.display_table(initial_state, action, next_state, reward, done)
 
-
-@TODO # shape will be determined
+# shape will be determined
 # Create the Q-Network.
 q_network = Sequential([
     ### START CODE HERE ###
     Input(shape=state_size),
     Dense(units=64, activation='relu'),
     Dense(units=64, activation='relu'),
-    Dense(units=num_actions, activation='linear'),
+    Dense(units=64, activation='relu'),
+    Dense(units=num_actions, activation='sigmoid'),
     ### END CODE HERE ###
     ])
 
@@ -67,7 +69,8 @@ target_q_network = Sequential([
     Input(shape=state_size),
     Dense(units=64, activation='relu'),
     Dense(units=64, activation='relu'),
-    Dense(units=num_actions, activation='linear'),
+    Dense(units=64, activation='relu'),
+    Dense(units=num_actions, activation='sigmoid'),
     ### END CODE HERE ###
     ])
 
@@ -129,7 +132,9 @@ target_q_network.set_weights(q_network.get_weights())
 for i in range(num_episodes):
 
     # Reset the environment to the initial state and get the initial state.
-    state = env.reset()
+    zeroList = [20.0, 40.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    javaMain.reset()
+    state = zeroList
     total_points = 0
 
     for t in range(max_num_timesteps):
@@ -140,7 +145,15 @@ for i in range(num_episodes):
         action = utils.get_action(q_values, epsilon)
 
         # Take action A and receive reward R and the next state S'.
-        next_state, reward, done, _ = env.step(action)
+
+        javaMain.step(action)
+        time.sleep(1 / 6)
+        list2 = javaMain.getLatestInfo()
+        next_state = list2[0: 16]
+        reward = list2[16]
+        done = list2[17]
+
+        #next_state, reward, done, _ = javaMain.step(action)
 
         # Store experience tuple (S,A,R,S') in the memory buffer.
         # We store the done variable as well for convenience.
