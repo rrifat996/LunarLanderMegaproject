@@ -5,7 +5,7 @@
 ### Instructions  
 First run 3DEngine program before python script.  
 ### To run without python learning loop  
-set step attrb = 1 and remove step-- from EngineManager of 3DEngine program. Otherwise you will see black screen meaning   engine waits for step() call.  
+set attrb step = 1 and remove step-- from EngineManager of 3DEngine program. Otherwise you will see black screen meaning the engine is waiting for next step() call.  
 ### Camera Control Scheme  
 ![image](https://user-images.githubusercontent.com/92366936/222907945-355c6021-77d8-4eda-83e6-321f95ca4c43.png)  
 simply standard videogame helicopter controls.  
