@@ -1,5 +1,5 @@
 # LunarLander Project
-###Descirption  
+### Features
 +3 Month long Simulation project which lands lunar lander with 17 thrusters and 4 hitboxes from specific coordinates to the origin of the world.   
 ![image](https://user-images.githubusercontent.com/92366936/221451725-44fe2458-5b27-4274-8d9f-bb80b6141950.png)   
 Instructions  
