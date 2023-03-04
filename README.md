@@ -1,11 +1,15 @@
 # LunarLander Project
-+3 month long Simulation project which lands lunar lander with 17 thrusters and 4 hitboxes from specific coordinates to the origin of the world.   
-First run test engine before python script.   
-To run engine without step logic (made for the learning algorithm) set step attrb = 1 and remove step-- from EngineManager. Otherwise you will see black screen meaning   engine waits for step() call.   
-For manual thrusting controls which are IMPOSSIBLE to land with can be learned from TestGame class.   
-There are 36 input combinations some which are not defined in the learning algorithm.  
-For manual control you MUST check Test class vector summing thrusting method AND check position vectors of thrusters relative to centerEntity for you to know which   thruster you will ignite.  
-Controls are not toggle, and you can use many of them simulataneously. Learner ignites single thruster (or none) each step.  
-Lunar Lander texture is undefined i know. Texture mapping in 3D engine is not enough for definining more complex textures, I could not found a way to implement reading   .mtl files, in my own engine.  
-Physics engine is implemented for only this project. Collisions will not be accurate for a different entity.  
-![image](https://user-images.githubusercontent.com/92366936/221451725-44fe2458-5b27-4274-8d9f-bb80b6141950.png)  
+Descirption
++3 Month long Simulation project which lands lunar lander with 17 thrusters and 4 hitboxes from specific coordinates to the origin of the world. 
+![image](https://user-images.githubusercontent.com/92366936/221451725-44fe2458-5b27-4274-8d9f-bb80b6141950.png) 
+Instructions
+First run 3DEngine program before python script.
+To run without python learning loop
+set step attrb = 1 and remove step-- from EngineManager of 3DEngine program. Otherwise you will see black screen meaning   engine waits for step() call.
+Camera Control Scheme
+![image](https://user-images.githubusercontent.com/92366936/222907945-355c6021-77d8-4eda-83e6-321f95ca4c43.png)
+simply standard videogame helicopter controls.
+Control Scheme
+![image](https://user-images.githubusercontent.com/92366936/222907649-8b79c130-afca-456c-b4b7-8c87c3c1932b.png)
+controls are not toggle, and you can use many of them as you want simulataneously.
+Lunar lander texture is broken, but it still resembles it.
