@@ -165,7 +165,7 @@ public class TestGame implements ILogic{
 		
 	}
 
-	public List<Float> getInfo(boolean engineFired) {
+	public List<Float> getInfo(ArrayList<Integer> thrusts) {
 		List<Float> list = Arrays.asList(new Float[18]);
 		list.set(0, centerEntity.getPos().x);
 		list.set(1, centerEntity.getPos().y);
@@ -183,11 +183,11 @@ public class TestGame implements ILogic{
 		list.set(13, spherEntity2.getPos().y < 1 ? 1.0f : 0.0f);
 		list.set(14, spherEntity3.getPos().y < 1 ? 1.0f : 0.0f);
 		list.set(15, spherEntity4.getPos().y < 1 ? 1.0f : 0.0f);
-		list.set(16, calculateReward(engineFired));
+		list.set(16, calculateReward(thrusts.size()));
 		list.set(17, isDone());
 		return list;
 	}
-	public float calculateReward(boolean engineFired) {
+	public float calculateReward(int firedEngines) {
 		float reward = 0;
 		if(isDone() > 0.5 && spherEntity1.getPos().length() < 15
 				&& spherEntity2.getPos().length() < 15
@@ -214,8 +214,7 @@ public class TestGame implements ILogic{
 			reward += 15;
 		if(spherEntity4.getPos().y < 1 && spherEntity4.getPos().length() < 15) 
 			reward += 15;
-		if(engineFired)
-			reward -= 0.03f;
+		reward -= 0.03f * firedEngines;
 		return reward;
 	}
 	public float isDone() {
@@ -332,7 +331,23 @@ public class TestGame implements ILogic{
 		if(engineJRequested) {	controlList.add(21);engineJRequested = false;}
 		if(engineKRequested) {	controlList.add(22);engineKRequested = false;}
 		if(engineLRequested) {	controlList.add(23);engineLRequested = false;}
-		controlList.add(Main.getLatestThrust());
+		ArrayList<Integer> source = Main.getLatestThrusts();
+		if(source.get(0) == 1) controlList.add(3);
+		if(source.get(1) == 1) controlList.add(12);
+		if(source.get(2) == 1) controlList.add(8);
+		if(source.get(3) == 1) controlList.add(18);
+		if(source.get(4) == 1) controlList.add(4);
+		if(source.get(5) == 1) controlList.add(11);
+		if(source.get(6) == 1) controlList.add(25);
+		if(source.get(7) == 1) controlList.add(30);
+		if(source.get(8) == 1) controlList.add(2);
+		if(source.get(9) == 1) controlList.add(9);
+		if(source.get(10) == 1) controlList.add(13);
+		if(source.get(11) == 1) controlList.add(18);
+		if(source.get(12) == 1) controlList.add(5);
+		if(source.get(13) == 1) controlList.add(10);
+		if(source.get(14) == 1) controlList.add(18);
+		if(source.get(15) == 1) controlList.add(31);
 		
 		if(controlList.size() == 0) {
 			centerEntity.setA(0,0,0);

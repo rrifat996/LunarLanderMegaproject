@@ -60,7 +60,7 @@ def get_experiences(memory_buffer):
         np.array([e.state for e in experiences if e is not None]), dtype=tf.float32
     )
     actions = tf.convert_to_tensor(
-        np.array([e.action for e in experiences if e is not None]), dtype=tf.float32
+        np.array([e.actions for e in experiences if e is not None]), dtype=tf.float32
     )
     rewards = tf.convert_to_tensor(
         np.array([e.reward for e in experiences if e is not None]), dtype=tf.float32
@@ -147,12 +147,20 @@ def get_action(q_values, epsilon=0.0):
     """
 
     if random.random() > epsilon:
-        l = argmax(tf.Variable(q_values).numpy().tolist())
-        return l
+        list1 = tf.Variable(q_values).numpy().tolist()
+        list2 = []
+        for i in range(16):
+            if list1[0][i] > 0.5:
+                list2.append(1)
+            else:
+                list2.append(0)
+        return list2
     else:
-        list1 = [0,1,2,3,4,5,6,7,8,9,10]
-        number = random.choice(list1)
-        return number
+        #list1 = [3,12,8,18,4,11,25,30,2,9,13,18,5,10,18,31]
+        list2 = []
+        for i in range(16):
+            list2.append(random.randint(0,1))
+        return list2
 
 
 def update_target_network(q_network, target_q_network):

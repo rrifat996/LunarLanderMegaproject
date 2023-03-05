@@ -26,11 +26,11 @@ if __name__ == '__main__':
 MEMORY_SIZE = 100_000     # size of memory buffer.
 GAMMA = 0.995             # discount factor.
 ALPHA = 1e-3              # learning rate.
-NUM_STEPS_FOR_UPDATE = 4  # perform a learning update every C time steps.
+NUM_STEPS_FOR_UPDATE = 2  # perform a learning update every C time steps.
 
 #position3 rotation3 v3 w3 contact4
 state_size = 16;
-num_actions = 17 + 1;
+num_actions = 16;
 
 # dont forget to modify engine manager#
 
@@ -40,11 +40,8 @@ javaMain = gateway.entry_point
 
 # reset environment
 javaMain.reset()
-# random initial action
-action = 0
-
 # single time step may be 5 10 multiple idk
-javaMain.step(action)
+javaMain.step(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 time.sleep(1 / 6)
 listInfo = javaMain.getLatestInfo()
 next_state = listInfo[0 : 16]
@@ -60,7 +57,6 @@ q_network = Sequential([
     Input(shape=state_size),
     Dense(units=64, activation='relu'),
     Dense(units=64, activation='relu'),
-    Dense(units=64, activation='relu'),
     Dense(units=num_actions, activation='sigmoid'),
     ### END CODE HERE ###
     ])
@@ -69,7 +65,6 @@ q_network = Sequential([
 target_q_network = Sequential([
     ### START CODE HERE ###
     Input(shape=state_size),
-    Dense(units=64, activation='relu'),
     Dense(units=64, activation='relu'),
     Dense(units=64, activation='relu'),
     Dense(units=num_actions, activation='sigmoid'),
@@ -81,25 +76,32 @@ optimizer = Adam(learning_rate=ALPHA)
 ### END CODE HERE ###
 
 # Store experiences as named tuples.
-experience = namedtuple("Experience", field_names=["state", "action", "reward", "next_state", "done"])
+experience = namedtuple("Experience", field_names=["state", "actions", "reward", "next_state", "done"])
 
 
 #total loss for a minibatch
 def compute_loss(experiences, gamma, q_network, target_q_network):
+
+    # Unpack the mini-batch of experience tuples.
     states, actions, rewards, next_states, done_vals = experiences
 
+    # Compute max Q^(s,a).
     max_qsa = tf.reduce_max(target_q_network(next_states), axis=-1)
 
+    # Set y = R if episode terminates, otherwise set y = R + γ max Q^(s,a).
     y_targets = rewards + (gamma * max_qsa * (1 - done_vals))
 
+    # Get the q_values.
     q_values = q_network(states)
+
     q_values = tf.gather_nd(q_values, tf.stack([tf.range(q_values.shape[0]),
                                                 tf.cast(actions, tf.int32)], axis=1))
+
+    # Calculate the loss.
     loss = MSE(y_targets, q_values)
 
     return loss
 
-@tf.function
 def agent_learn(experiences, gamma):
     # Calculate the loss.
     with tf.GradientTape() as tape:
@@ -131,6 +133,8 @@ memory_buffer = deque(maxlen=MEMORY_SIZE)
 # Set the target network weights equal to the Q-Network weights.
 target_q_network.set_weights(q_network.get_weights())
 
+
+
 for i in range(num_episodes):
 
     # Reset the environment to the initial state and get the initial state.
@@ -145,12 +149,27 @@ for i in range(num_episodes):
         state_qn = np.expand_dims(state, axis=0)  # state needs to be the right shape for the q_network.
         q_values = q_network(state_qn)
         action = utils.get_action(q_values, epsilon)
-
+        print(action)
 
         # Take action A and receive reward R and the next state S'.
 
-        javaMain.step(action)
-        time.sleep(1 / 6)
+        javaMain.step(action[0],
+                      action[1],
+                      action[2],
+                      action[3],
+                      action[4],
+                      action[5],
+                      action[6],
+                      action[7],
+                      action[8],
+                      action[9],
+                      action[10],
+                      action[11],
+                      action[12],
+                      action[13],
+                      action[14],
+                      action[15])
+        time.sleep(1 / 16)
         list2 = javaMain.getLatestInfo()
         print(list2)
         next_state = list(list2[0: 16])
@@ -161,7 +180,28 @@ for i in range(num_episodes):
 
         # Store experience tuple (S,A,R,S') in the memory buffer.
         # We store the done variable as well for convenience.
-        memory_buffer.append(experience(state, action, reward, next_state, done))
+
+        intAction = 0
+        intAction += action[0] * 1
+        intAction += action[1] * 2
+        intAction += action[2] * 2 * 2
+        intAction += action[3] * 2 * 2 * 2
+        intAction += action[4] * 2 * 2 * 2 * 2
+        intAction += action[5] * 2 * 2 * 2 * 2 * 2
+        intAction += action[6] * 2 * 2 * 2 * 2 * 2 * 2
+        intAction += action[7] * 2 * 2 * 2 * 2 * 2 * 2 * 2
+        intAction += action[8] * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2
+        intAction += action[9] * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2
+        intAction += action[10] * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2
+        intAction += action[11] * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2
+        intAction += action[12] * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2
+        intAction += action[13] * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2
+        intAction += action[14] * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2
+        intAction += action[15] * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2 * 2
+
+
+
+        memory_buffer.append(experience(state, intAction % 256 , reward, next_state, done))
 
         # Only update the network every NUM_STEPS_FOR_UPDATE time steps.
         update = utils.check_update_conditions(t, NUM_STEPS_FOR_UPDATE, memory_buffer)
